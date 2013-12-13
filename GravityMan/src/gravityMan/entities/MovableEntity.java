@@ -10,4 +10,7 @@ public interface MovableEntity extends Entity {
 	void setVelY(double val);
 	void setVelAngleRad(double theta);
 	void scaleVel(double factor);
+	
+	void setTheta(double theta);
+	double getTheta();
 }

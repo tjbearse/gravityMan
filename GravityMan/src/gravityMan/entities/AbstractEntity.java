@@ -1,6 +1,6 @@
 package gravityMan.entities;
 
-import gravityMan.entities.hitboxes.Hitbox;
+import gravityMan.abstractEntities.hitboxes.Hitbox;
 
 
 public abstract class AbstractEntity implements Entity {
@@ -15,6 +15,7 @@ public abstract class AbstractEntity implements Entity {
 	}
 
 	public boolean intersects(AbstractEntity other) {
+		// need to update hitbox locations/rotations first
 		return hitbox.intersects(hitbox);
 	}
 	
