@@ -1,5 +1,7 @@
 package gravityMan.entities;
 
+import gravityMan.util.Vector2d;
+
 public abstract class AbstractMovableEntity extends AbstractEntity implements
 		MovableEntity {
 	protected Vector2d vel;

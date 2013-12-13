@@ -1,5 +1,7 @@
 package gravityMan.entities;
 
+import gravityMan.util.Vector2d;
+
 
 public abstract class AbstractFreeMoveEntity extends AbstractMovableEntity {
 	protected double mass;

@@ -23,13 +23,20 @@ public class Vector2d  {
 		y = Math.sin(theta);
 	}
 	
-	//TODO: create scale that returns the vector (to avoid having to copy)
+	
 	public void scale(double factor) {
 		double theta = getAngleRad();
 		double mag = getMag();
 		x = Math.cos(theta) * mag * factor;
 		y = Math.sin(theta) * mag * factor;
 	}
+	
+	public Vector2d cpScale(double factor) {
+		double theta = getAngleRad();
+		double mag = getMag();
+		return new Vector2d(Math.cos(theta) * mag * factor, Math.sin(theta) * mag * factor);
+	}
+	
 
 	public void add(Vector2d v) {
 		x += v.x;
@@ -78,7 +85,10 @@ public class Vector2d  {
 	public double getY() {
 		return y;
 	}
-	
+
+	public double getMag() {
+		return Math.sqrt(x * x + y * y);
+	}
 	public void setX(double val){
 		x = val;
 	}
@@ -86,9 +96,11 @@ public class Vector2d  {
 	public void setY(double val){
 		y = val;
 	}
-
-	public double getMag() {
-		return Math.sqrt(x * x + y * y);
+	
+	
+	public void zero(){
+		x = 0;
+		y = 0;
 	}
 }
 
