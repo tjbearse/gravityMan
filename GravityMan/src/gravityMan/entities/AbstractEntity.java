@@ -1,9 +1,11 @@
 package gravityMan.entities;
 
+import gravityMan.entities.hitboxes.Hitbox;
+
 
 public abstract class AbstractEntity implements Entity {
 	protected double x, y, width, height;
-	//TODO: figure out shapes for hitboxes
+	protected Hitbox hitbox;
 	
 	public AbstractEntity(double x, double y, double width, double height) {
 		this.x = x;
@@ -12,6 +14,10 @@ public abstract class AbstractEntity implements Entity {
 		this.height = height;
 	}
 
+	public boolean intersects(AbstractEntity other) {
+		return hitbox.intersects(hitbox);
+	}
+	
 	@Override
 	public void setLocation(double x, double y) {
 		this.x = x;

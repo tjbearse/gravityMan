@@ -1,5 +1,7 @@
 package gravityMan;
 
+import gravityMan.entities.Entity;
+
 import org.lwjgl.*;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.*;
@@ -76,7 +78,7 @@ public class Game {
 	}
 
 	private void setUpEntities() {
-		unit = new Body(WIDTH / 2, HEIGHT / 2, 15, 1);
+		//unit = new Entity(WIDTH / 2, HEIGHT / 2, 15, 1);
 	}
 
 	private void setUpOpenGL() {
