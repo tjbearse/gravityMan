@@ -1,8 +1,11 @@
 package gravityMan.entities;
 
+import gravityMan.util.Vector2d;
+
 public abstract class AbstractMovableEntity extends AbstractEntity implements
 		MovableEntity {
 	protected Vector2d vel;
+	protected double theta;
 
 	public AbstractMovableEntity(double x, double y, double width, double height) {
 		super(x, y, width, height);
@@ -22,44 +25,51 @@ public abstract class AbstractMovableEntity extends AbstractEntity implements
 
 	@Override
 	public double getVelY() {
-		// TODO Auto-generated method stub
-		return 0;
+		return vel.getY();
+
 	}
 
 	@Override
 	public double getVelMag() {
-		// TODO Auto-generated method stub
-		return 0;
+		return vel.getMag();
+
 	}
 
 	@Override
 	public double getVelAngleRad() {
-		// TODO Auto-generated method stub
-		return 0;
+		return vel.getAngleDeg();
 	}
 
 	@Override
 	public void setVelX(double val) {
-		// TODO Auto-generated method stub
+		vel.setX(val);
 
 	}
 
 	@Override
 	public void setVelY(double val) {
-		// TODO Auto-generated method stub
+		vel.setY(val);
 
 	}
 
 	@Override
 	public void setVelAngleRad(double theta) {
-		// TODO Auto-generated method stub
+		vel.setAngleRad(theta);
 
 	}
 
 	@Override
 	public void scaleVel(double factor) {
-		// TODO Auto-generated method stub
+		vel.scale(factor);
 
+	}
+
+	public void setTheta(double theta) {
+		this.theta = theta;
+	}
+
+	public double getTheta() {
+		return theta;
 	}
 
 }
