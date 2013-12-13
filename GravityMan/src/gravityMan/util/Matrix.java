@@ -31,18 +31,26 @@ public class Matrix {
 	}
 
 	public Vector2d multiply(Vector2d vec) {
-		double e = a * vec.getX() + c * vec.getY();
-		double f = b * vec.getX() + d * vec.getY();
+		double e = a * vec.getX() + c * vec.getY(); //top 
+		double f = b * vec.getX() + d * vec.getY(); //bottom
 		return new Vector2d(e, f);
 
 	}
 
 	public Matrix multiply(Matrix other) {
-		double i = a * other.a + c * other.b;
-		double j = b * other.a + d * other.b;
-		double k = a * other.c + c * other.d;
-		double l = b * other.c + d * other.d;
+		double i = a * other.a + c * other.b; //upperLeft
+		double j = b * other.a + d * other.b; //lowerLeft
+		double k = a * other.c + c * other.d; //upperRight
+		double l = b * other.c + d * other.d; //lowerRight
 		return new Matrix(i, j, k, l);
+	}
+	
+	public static Matrix rotationMatrix(double theta){
+		double m = Math.cos(theta); //upperLeft
+		double n = -Math.sin(theta); //lowerLeft
+		double o = Math.sin(theta); //upperRight
+		double p = Math.cos(theta); //lowerRight
+		return new Matrix(m, n, o, p);
 	}
 
 }
