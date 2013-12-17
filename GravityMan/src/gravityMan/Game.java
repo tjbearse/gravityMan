@@ -1,6 +1,10 @@
 package gravityMan;
 
+import gravityMan.abstractEntities.entities.TestObject;
 import gravityMan.entities.Entity;
+import gravityMan.entities.Rope;
+import gravityMan.entities.RopeNode;
+import gravityMan.util.Vector2d;
 
 import org.lwjgl.*;
 import org.lwjgl.input.Keyboard;
@@ -15,14 +19,17 @@ public class Game {
 
 	private boolean isRunning = true;
 
-	private int unitProp = 1;
+	private TestObject unit;
+	private Rope rope;
+	
+	private double unitProp = .3;
 	private double unitTurnProp = .01;
-	private Entity unit;
 	private int unitCollision = 0;
 
-	private double AngFric = .5;
+	private double airFriction = .01;
+	private Vector2d gravity = new Vector2d(0, -.098);
+	// private double AngFric = .5;
 
-	
 	public Game() {
 		setUpDisplay();
 		setUpOpenGL();
@@ -43,32 +50,43 @@ public class Game {
 	}
 
 	private void logic(int delta) {
-		
+		unit.update(delta);
+		rope.update(delta);
+		for(RopeNode n : rope.nodes){
+			n.applyForce(gravity);
+			n.applyForce(n.getVel().scaleCpy(-airFriction));
+		}
 	}
+	
 
 	private void input() {
-		int mag;
+		double magX;
 		if (Keyboard.isKeyDown(Keyboard.KEY_UP)) {
-			mag = unitProp;
+			magX = unitProp;
 		} else if (Keyboard.isKeyDown(Keyboard.KEY_DOWN)) {
-			mag = -unitProp;
+			magX = -unitProp;
 		} else {
-			mag = 0;
+			magX = 0;
 		}
-		double rotMag;
+		
+		double magY;
 		if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) {
-			rotMag = -unitTurnProp;
+			magY = unitProp;
 		} else if (Keyboard.isKeyDown(Keyboard.KEY_LEFT)) {
-			rotMag = unitTurnProp;
+			magY = -unitProp;
 		} else {
-			rotMag = 0;
+			magY = 0;
 		}
+		Vector2d propulsion = new Vector2d(magY, magX);
+		
+		rope.anchor.setVel(propulsion);
 
 	}
 
 	private void render() {
 		glClear(GL_COLOR_BUFFER_BIT);
 		unit.draw();
+		rope.draw();
 	}
 
 	private long lastFrame;
@@ -78,7 +96,8 @@ public class Game {
 	}
 
 	private void setUpEntities() {
-		//unit = new Entity(WIDTH / 2, HEIGHT / 2, 15, 1);
+		unit = new TestObject(WIDTH / 4, HEIGHT / 4, 15, 10, 10);
+		rope = new Rope(WIDTH/2, 3*HEIGHT/4, 6);
 	}
 
 	private void setUpOpenGL() {
@@ -91,7 +110,7 @@ public class Game {
 	private void setUpDisplay() {
 		try {
 			Display.setDisplayMode(new DisplayMode(WIDTH, HEIGHT));
-			Display.setTitle("PONG");
+			Display.setTitle("Gravity Man!");
 			Display.create();
 		} catch (LWJGLException e) {
 			e.printStackTrace();
@@ -113,4 +132,3 @@ public class Game {
 		new Game();
 	}
 }
-

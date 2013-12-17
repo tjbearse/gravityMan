@@ -9,10 +9,11 @@ public class Vector2d  {
 		y = v.y;
 	}
 	public Vector2d() {
-		// TODO Auto-generated constructor stub
+		x = 0;
+		y = 0;
 	}
 	
-	Vector2d(double x, double y){
+	public Vector2d(double x, double y){
 		this.x = x;
 		this.y = y;
 	}
@@ -31,16 +32,31 @@ public class Vector2d  {
 		y = Math.sin(theta) * mag * factor;
 	}
 	
-	public Vector2d cpScale(double factor) {
-		double theta = getAngleRad();
-		double mag = getMag();
-		return new Vector2d(Math.cos(theta) * mag * factor, Math.sin(theta) * mag * factor);
+	public Vector2d scaleCpy(double factor) {
+		Vector2d vec = new Vector2d(this);
+		vec.scale(factor);
+		return vec;
 	}
 	
 
 	public void add(Vector2d v) {
 		x += v.x;
 		y += v.y;
+	}
+	public void sub(Vector2d v) {
+		x -= v.x;
+		y -= v.y;
+	}
+	
+	public Vector2d addCpy(Vector2d v){
+		Vector2d vec = new Vector2d(this);
+		vec.add(v);
+		return vec;
+	}
+	public Vector2d subCpy(Vector2d v){
+		Vector2d vec = new Vector2d(this);
+		vec.sub(v);
+		return vec;
 	}
 
 	public void setAngleRad(double theta) {
@@ -95,6 +111,11 @@ public class Vector2d  {
 	
 	public void setY(double val){
 		y = val;
+	}
+	
+	public void set(double x, double y){
+		this.x = x;
+		this.y = y;
 	}
 	
 	
