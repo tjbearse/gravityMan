@@ -24,12 +24,14 @@ public class Vector2d  {
 		y = Math.sin(theta);
 	}
 	
-	
-	public void scale(double factor) {
+	// returns self (for nesting operations)
+	//TODO replace unneeded copies with edit same thing, espec. rope + updates
+	public Vector2d scale(double factor) {
 		double theta = getAngleRad();
 		double mag = getMag();
 		x = Math.cos(theta) * mag * factor;
 		y = Math.sin(theta) * mag * factor;
+		return this;
 	}
 	
 	public Vector2d scaleCpy(double factor) {
@@ -39,24 +41,24 @@ public class Vector2d  {
 	}
 	
 
-	public void add(Vector2d v) {
+	public Vector2d add(Vector2d v) {
 		x += v.x;
 		y += v.y;
+		return this;
 	}
-	public void sub(Vector2d v) {
+	public Vector2d sub(Vector2d v) {
 		x -= v.x;
 		y -= v.y;
+		return this;
 	}
 	
 	public Vector2d addCpy(Vector2d v){
 		Vector2d vec = new Vector2d(this);
-		vec.add(v);
-		return vec;
+		return vec.add(v);
 	}
 	public Vector2d subCpy(Vector2d v){
 		Vector2d vec = new Vector2d(this);
-		vec.sub(v);
-		return vec;
+		return vec.sub(v);
 	}
 
 	public void setAngleRad(double theta) {

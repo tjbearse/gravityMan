@@ -24,6 +24,10 @@ public abstract class AbstractFreeMoveEntity extends AbstractMovableEntity {
 		this.force.add(force);
 	}
 
+	public double getMass(){
+		return mass;
+	}
+	
 	@Override
 	public void update(int delta) {
 		// TODO: change to improved Euler or RK4?

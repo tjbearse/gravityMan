@@ -1,36 +1,62 @@
 package gravityMan.entities;
 
-
 import gravityMan.util.Vector2d;
+import static org.lwjgl.opengl.GL11.*;
 
 public class Rope {
 	public RopeNode[] nodes;
-	public RopeNodeFixed anchor;
+	public RopeNodeFixed anchorA;
+	public RopeNodeFixed anchorB;
 
+	//protected double equilLen = 5;
+	//protected double springConst = .2;
+	//protected double dampening = .05;
 	protected double equilLen = 5;
-	protected double springConst = .01;
-	protected double dampening = .2;
+	protected double springConst = .05;
+	
 
 	
-	protected double nodeMass = 10;
+
+	protected double nodeMass = 100;
+
 	public Rope() {
 		nodes = null;
 	}
 
+	public void removeNode() {
+		if (nodes.length == 1) {
+			return;
+		} else {
+			System.arraycopy(nodes, 0, nodes, 0, nodes.length - 1);
+		}
+	}
+
+	public void addNode() {
+		RopeNode[] temp = nodes;
+		System.arraycopy(nodes, 0, nodes, 0, nodes.length - 1);
+	}
+
 	public Rope(double x, double y, int num) {
 		nodes = new RopeNode[num - 1];
-		anchor = new RopeNodeFixed(x, y);
+		anchorA = new RopeNodeFixed(x, y);
+		anchorB = new RopeNodeFixed(x, y);
 		for (int i = 0; i < num - 1; i++) {
 			nodes[i] = new RopeNode(x, y, nodeMass);
 		}
 	}
+	
+	public void attachB(AbstractFreeMoveEntity anchor){
+		//anchorB = anchor;
+	}
 
 	public void update(int delta) {
 		TensionForces();
-		anchor.update(delta);
+		anchorA.update(delta);
+		anchorB.update(delta);
 		for (RopeNode r : nodes) {
 			r.update(delta);
 		}
+		
 	}
 
 	private void TensionForces() {
@@ -38,36 +64,60 @@ public class Rope {
 		Vector2d x;
 		Vector2d force;
 		// TODO add null checks (1 or no nodes);
-		dist = anchor.getLocation().subCpy(nodes[0].getLocation());
-		if (dist.getMag() == 0) {
-			x = new Vector2d(0, 0);
-		} else {
-			x = dist.scaleCpy(equilLen / dist.getMag());
-		}
-		force = dist.subCpy(x).scaleCpy(springConst);
-		force.add(anchor.getVel().subCpy(nodes[0].getVel()).scaleCpy(dampening));
-		
-		nodes[0].applyForce(force);
-		
-		for(int i=1; i<nodes.length; i++){
-			dist = nodes[i-1].getLocation().subCpy(nodes[i].getLocation());
-			if (dist.getMag() == 0) {
-				x = new Vector2d(0, 0);
-			} else {
-				x = dist.scaleCpy(equilLen / dist.getMag());
+
+		for (int j = 1; j <= 4; j++) {
+			for (int i = 0; i < j; i++) {
+				dist = anchorA.getLocation().subCpy(nodes[i].getLocation());
+				if (dist.getMag() > equilLen * (i + 1)) {
+					x = dist.scaleCpy(equilLen / dist.getMag());
+					force = dist.subCpy(x).scaleCpy(springConst);
+
+					nodes[i].applyForce(force);
+				}
 			}
-			force = dist.subCpy(x).scaleCpy(springConst);
-			force.add(nodes[i-1].getVel().subCpy(nodes[i].getVel()).scaleCpy(dampening));
-			nodes[i-1].applyForce(force.scaleCpy(-1));
-			nodes[i].applyForce(force);
+
+			for (int i = j; i < nodes.length; i++) {
+				dist = nodes[i - j].getLocation()
+						.subCpy(nodes[i].getLocation());
+				if (dist.getMag() > equilLen * j) {
+					x = dist.scaleCpy(equilLen * j / dist.getMag());
+					force = dist.subCpy(x).scale(springConst);
+
+					nodes[i].applyForce(force);
+					nodes[i - j].applyForce(force.scaleCpy(-1));
+				}
+			}
+
+			for (int i = 0; i < j; i++) {
+				dist = anchorB.getLocation().subCpy(
+						nodes[nodes.length - i - 1].getLocation());
+				if (dist.getMag() > equilLen * (i + 1)) {
+					x = dist.scaleCpy(equilLen / dist.getMag());
+					force = dist.subCpy(x).scaleCpy(springConst);
+
+					nodes[nodes.length - i - 1].applyForce(force);
+					//anchorB.applyForce(force.scale(-1));
+				}
+			}
+
 		}
-		//System.out.println("y0: "+nodes[0].getY()+"y1: "+nodes[1].getY());
+
 	}
 
 	public void draw() {
-		anchor.draw();
+		anchorA.draw();
+		anchorB.draw();
 		for (RopeNode r : nodes) {
 			r.draw();
 		}
+		glBegin(GL_LINES);
+		glVertex2d(anchorA.getX(), anchorA.getY());
+		for (int i = 0; i < nodes.length; i++) {
+			// nodes[i].draw();
+			glVertex2d(nodes[i].getX(), nodes[i].getY());
+			glVertex2d(nodes[i].getX(), nodes[i].getY());
+		}
+		glVertex2d(anchorB.getX(), anchorB.getY());
+		glEnd();
 	}
 }

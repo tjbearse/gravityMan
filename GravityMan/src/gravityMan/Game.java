@@ -21,13 +21,14 @@ public class Game {
 
 	private TestObject unit;
 	private Rope rope;
-	
+
 	private double unitProp = .3;
 	private double unitTurnProp = .01;
 	private int unitCollision = 0;
 
-	private double airFriction = .01;
+	private double airFriction = .1;
 	private Vector2d gravity = new Vector2d(0, -.098);
+
 	// private double AngFric = .5;
 
 	public Game() {
@@ -40,7 +41,7 @@ public class Game {
 			logic(getDelta());
 			input();
 			Display.update();
-			Display.sync(60);
+			Display.sync(100);
 
 			if (Display.isCloseRequested()) {
 				isRunning = false;
@@ -51,35 +52,38 @@ public class Game {
 
 	private void logic(int delta) {
 		unit.update(delta);
+		unit.applyForce(gravity.scaleCpy( unit.getMass()));
+		unit.applyForce(unit.getVel().scale(-airFriction * unit.getVelMag()));
+		
 		rope.update(delta);
-		for(RopeNode n : rope.nodes){
-			n.applyForce(gravity);
+		for (RopeNode n : rope.nodes) {
+			n.applyForce(gravity.scaleCpy(n.getMass()));
+			n.applyForce(n.getVel().scale(-airFriction * n.getVelMag()));
 			n.applyForce(n.getVel().scaleCpy(-airFriction));
 		}
 	}
-	
 
 	private void input() {
-		double magX;
-		if (Keyboard.isKeyDown(Keyboard.KEY_UP)) {
-			magX = unitProp;
-		} else if (Keyboard.isKeyDown(Keyboard.KEY_DOWN)) {
-			magX = -unitProp;
-		} else {
-			magX = 0;
-		}
-		
 		double magY;
-		if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) {
+		if (Keyboard.isKeyDown(Keyboard.KEY_UP)) {
 			magY = unitProp;
-		} else if (Keyboard.isKeyDown(Keyboard.KEY_LEFT)) {
+		} else if (Keyboard.isKeyDown(Keyboard.KEY_DOWN)) {
 			magY = -unitProp;
 		} else {
 			magY = 0;
 		}
-		Vector2d propulsion = new Vector2d(magY, magX);
-		
-		rope.anchor.setVel(propulsion);
+
+		double magX;
+		if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) {
+			magX = unitProp;
+		} else if (Keyboard.isKeyDown(Keyboard.KEY_LEFT)) {
+			magX = -unitProp;
+		} else {
+			magX = 0;
+		}
+		Vector2d propulsion = new Vector2d(magX, magY);
+		// unit.applyForce(propulsion);
+		rope.anchorB.setVel(propulsion);
 
 	}
 
@@ -96,8 +100,9 @@ public class Game {
 	}
 
 	private void setUpEntities() {
-		unit = new TestObject(WIDTH / 4, HEIGHT / 4, 15, 10, 10);
-		rope = new Rope(WIDTH/2, 3*HEIGHT/4, 6);
+		unit = new TestObject(WIDTH / 2, 3 * HEIGHT / 4, 15, 10, 100);
+		rope = new Rope(WIDTH / 2, 3 * HEIGHT / 4, 10);
+		rope.attachB(unit);
 	}
 
 	private void setUpOpenGL() {

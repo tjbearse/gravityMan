@@ -50,12 +50,12 @@ public abstract class AbstractMovableEntity extends AbstractEntity implements
 		vel.setY(val);
 
 	}
-	
-	public void setVel(Vector2d vec){
+
+	public void setVel(Vector2d vec) {
 		vel = new Vector2d(vec);
 	}
-	
-	public Vector2d getVel(){
+
+	public Vector2d getVel() {
 		return new Vector2d(vel);
 	}
 
