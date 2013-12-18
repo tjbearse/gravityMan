@@ -13,5 +13,4 @@ public interface MovableEntity extends Entity {
 	
 	void setTheta(double theta);
 	double getTheta();
-	
 }
