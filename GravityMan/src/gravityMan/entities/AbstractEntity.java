@@ -15,6 +15,7 @@ public abstract class AbstractEntity implements Entity {
 	}
 
 	public boolean intersects(AbstractEntity other) {
+		// need to update hitbox locations/rotations first
 		return hitbox.intersects(hitbox);
 	}
 	

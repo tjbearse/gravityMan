@@ -5,7 +5,8 @@ import gravityMan.util.Vector2d;
 public abstract class AbstractMovableEntity extends AbstractEntity implements
 		MovableEntity {
 	protected Vector2d vel;
-	protected double theta;
+	protected double theta; // object rotation
+	protected double rotvel; // rotational velocity
 
 	public AbstractMovableEntity(double x, double y, double width, double height) {
 		super(x, y, width, height);
@@ -14,6 +15,7 @@ public abstract class AbstractMovableEntity extends AbstractEntity implements
 
 	@Override
 	public void update(int delta) {
+		//TODO change to RK4 or improved Euler
 		x += vel.getX() * delta;
 		y += vel.getY() * delta;
 	}
