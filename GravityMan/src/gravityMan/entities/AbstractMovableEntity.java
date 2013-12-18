@@ -20,6 +20,7 @@ public abstract class AbstractMovableEntity extends AbstractEntity implements
 		y += vel.getY() * delta;
 	}
 
+
 	@Override
 	public double getVelX() {
 		return vel.getX();

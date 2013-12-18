@@ -1,6 +1,6 @@
 package gravityMan.entities;
 
-import gravityMan.entities.hitboxes.Hitbox;
+import gravityMan.abstractEntities.hitboxes.Hitbox;
 
 
 public abstract class AbstractEntity implements Entity {
