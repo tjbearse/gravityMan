@@ -6,17 +6,14 @@ import static org.lwjgl.opengl.GL11.*;
 public class Rope {
 	public RopeNode[] nodes;
 	public RopeNodeFixed anchorA;
-	public RopeNodeFixed anchorB;
+	public AbstractFreeMoveEntity anchorB;
 
-	//protected double equilLen = 5;
-	//protected double springConst = .2;
-	//protected double dampening = .05;
+	// These vals work (even with attached item)
+	// protected double equilLen = 5;
+	// protected double springConst = .06;
+	// protected double nodeMass = 100;
 	protected double equilLen = 5;
-	protected double springConst = .05;
-	
-
-	
-
+	protected double springConst = .01;
 	protected double nodeMass = 100;
 
 	public Rope() {
@@ -27,36 +24,41 @@ public class Rope {
 		if (nodes.length == 1) {
 			return;
 		} else {
-			System.arraycopy(nodes, 0, nodes, 0, nodes.length - 1);
+			RopeNode[] temp = nodes;
+			nodes = new RopeNode[nodes.length - 1];
+			System.arraycopy(temp, 0, nodes, 0, nodes.length);
 		}
 	}
 
 	public void addNode() {
 		RopeNode[] temp = nodes;
-		System.arraycopy(nodes, 0, nodes, 0, nodes.length - 1);
+		nodes = new RopeNode[nodes.length + 1];
+		System.arraycopy(temp, 0, nodes, 0, temp.length);
+		nodes[nodes.length - 1] = new RopeNode(nodes[nodes.length - 2].getX(),
+				nodes[nodes.length - 2].getY(), nodeMass);
 	}
 
 	public Rope(double x, double y, int num) {
 		nodes = new RopeNode[num - 1];
 		anchorA = new RopeNodeFixed(x, y);
-		anchorB = new RopeNodeFixed(x, y);
+		// anchorB = new RopeNodeFixed(x, y);
 		for (int i = 0; i < num - 1; i++) {
 			nodes[i] = new RopeNode(x, y, nodeMass);
 		}
 	}
-	
-	public void attachB(AbstractFreeMoveEntity anchor){
-		//anchorB = anchor;
+
+	public void attachB(AbstractFreeMoveEntity anchor) {
+		anchorB = anchor;
 	}
 
 	public void update(int delta) {
 		TensionForces();
 		anchorA.update(delta);
-		anchorB.update(delta);
+		// anchorB.update(delta);
 		for (RopeNode r : nodes) {
 			r.update(delta);
 		}
-		
+
 	}
 
 	private void TensionForces() {
@@ -65,14 +67,14 @@ public class Rope {
 		Vector2d force;
 		// TODO add null checks (1 or no nodes);
 
-		for (int j = 1; j <= 4; j++) {
-			for (int i = 0; i < j; i++) {
+		for (int j = 1; j <= 5; j++) {
+			for (int i = 0; i < j && i < nodes.length; i++) {
 				dist = anchorA.getLocation().subCpy(nodes[i].getLocation());
 				if (dist.getMag() > equilLen * (i + 1)) {
-					x = dist.scaleCpy(equilLen / dist.getMag());
+					x = dist.scaleCpy(equilLen * (i + 1) / dist.getMag());
 					force = dist.subCpy(x).scaleCpy(springConst);
 
-					nodes[i].applyForce(force);
+					nodes[i].applyForce(force.scale(j - i));
 				}
 			}
 
@@ -88,15 +90,15 @@ public class Rope {
 				}
 			}
 
-			for (int i = 0; i < j; i++) {
+			for (int i = 0; i < j && nodes.length - i > 0; i++) {
 				dist = anchorB.getLocation().subCpy(
 						nodes[nodes.length - i - 1].getLocation());
 				if (dist.getMag() > equilLen * (i + 1)) {
-					x = dist.scaleCpy(equilLen / dist.getMag());
+					x = dist.scaleCpy(equilLen * (i + 1) / dist.getMag());
 					force = dist.subCpy(x).scaleCpy(springConst);
 
-					nodes[nodes.length - i - 1].applyForce(force);
-					//anchorB.applyForce(force.scale(-1));
+					nodes[nodes.length - i - 1].applyForce(force.scale(j - i));
+					anchorB.applyForce(force.scale(-1));
 				}
 			}
 
@@ -106,7 +108,7 @@ public class Rope {
 
 	public void draw() {
 		anchorA.draw();
-		anchorB.draw();
+		// anchorB.draw();
 		for (RopeNode r : nodes) {
 			r.draw();
 		}

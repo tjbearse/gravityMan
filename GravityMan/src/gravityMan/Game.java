@@ -18,6 +18,8 @@ public class Game {
 	public static final int HEIGHT = 480;
 
 	private boolean isRunning = true;
+	private int nodeChangeCooldown = 0;
+	private int nodeChangeCooldownNum = 10;
 
 	private TestObject unit;
 	private Rope rope;
@@ -26,8 +28,8 @@ public class Game {
 	private double unitTurnProp = .01;
 	private int unitCollision = 0;
 
-	private double airFriction = .1;
-	private Vector2d gravity = new Vector2d(0, -.098);
+	private double airFriction = .4;
+	private Vector2d gravity = new Vector2d(0, -.00098);
 
 	// private double AngFric = .5;
 
@@ -52,9 +54,9 @@ public class Game {
 
 	private void logic(int delta) {
 		unit.update(delta);
-		unit.applyForce(gravity.scaleCpy( unit.getMass()));
+		unit.applyForce(gravity.scaleCpy(unit.getMass()));
 		unit.applyForce(unit.getVel().scale(-airFriction * unit.getVelMag()));
-		
+
 		rope.update(delta);
 		for (RopeNode n : rope.nodes) {
 			n.applyForce(gravity.scaleCpy(n.getMass()));
@@ -81,9 +83,21 @@ public class Game {
 		} else {
 			magX = 0;
 		}
+
+		if (nodeChangeCooldown != 0) {
+			nodeChangeCooldown--;
+		} else {
+			if (Keyboard.isKeyDown(Keyboard.KEY_ADD)) {
+				rope.addNode();
+				nodeChangeCooldown = nodeChangeCooldownNum;
+			} else if (Keyboard.isKeyDown(Keyboard.KEY_SUBTRACT)) {
+				rope.removeNode();
+				nodeChangeCooldown = nodeChangeCooldownNum;
+			}
+		}
 		Vector2d propulsion = new Vector2d(magX, magY);
 		// unit.applyForce(propulsion);
-		rope.anchorB.setVel(propulsion);
+		rope.anchorA.setVel(propulsion);
 
 	}
 
@@ -100,7 +114,7 @@ public class Game {
 	}
 
 	private void setUpEntities() {
-		unit = new TestObject(WIDTH / 2, 3 * HEIGHT / 4, 15, 10, 100);
+		unit = new TestObject(WIDTH / 2, 3 * HEIGHT / 4, 15, 10, 5000);
 		rope = new Rope(WIDTH / 2, 3 * HEIGHT / 4, 10);
 		rope.attachB(unit);
 	}
