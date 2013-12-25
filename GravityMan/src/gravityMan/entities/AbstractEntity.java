@@ -1,15 +1,16 @@
 package gravityMan.entities;
 
 import gravityMan.abstractEntities.hitboxes.Hitbox;
+import gravityMan.util.Vector2d;
 
 
 public abstract class AbstractEntity implements Entity {
-	protected double x, y, width, height;
+	protected double width, height;
+	protected Vector2d pos;
 	protected Hitbox hitbox;
 	
 	public AbstractEntity(double x, double y, double width, double height) {
-		this.x = x;
-		this.y = y;
+		pos = new Vector2d(x, y);
 		this.width = width;
 		this.height = height;
 	}
@@ -21,18 +22,20 @@ public abstract class AbstractEntity implements Entity {
 	
 	@Override
 	public void setLocation(double x, double y) {
-		this.x = x;
-		this.y = y;
+		pos.set(x, y);
+	}
+	public void setLocation(Vector2d vec) {
+		pos = new Vector2d(vec);
 	}
 
 	@Override
 	public void setX(double x) {
-		this.x = x;
+		pos.setX(x);
 	}
 
 	@Override
 	public void setY(double y) {
-		this.y = y;
+		pos.setY(y);
 	}
 
 	@Override
@@ -47,14 +50,18 @@ public abstract class AbstractEntity implements Entity {
 
 	@Override
 	public double getX() {
-		return x;
+		return pos.getX();
 	}
 
 	@Override
 	public double getY() {
-		return y;
+		return pos.getY();
 	}
 
+	public Vector2d getLocation(){
+		return new Vector2d(pos);
+	}
+	
 	@Override
 	public double getHeight() {
 		return height;

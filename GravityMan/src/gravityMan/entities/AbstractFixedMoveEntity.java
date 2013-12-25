@@ -1,8 +1,11 @@
 package gravityMan.entities;
 
+import gravityMan.util.Vector2d;
+
 
 abstract public class AbstractFixedMoveEntity extends AbstractMovableEntity {
-	private Pair path[];
+	//TODO move path to lower class
+	private Vector2d path[];
 	
 	public AbstractFixedMoveEntity(double x, double y, double width,
 			double height) {
@@ -10,8 +13,8 @@ abstract public class AbstractFixedMoveEntity extends AbstractMovableEntity {
 		path = null;
 	}
 	
-	public void addToPath(Pair p){
-		Pair temp[] = new Pair[path.length+1];
+	public void addToPath(Vector2d p){
+		Vector2d temp[] = new Vector2d[path.length+1];
 		System.arraycopy(path, 0, temp, 0, path.length);
 		path = temp;
 		path[path.length-1] = p;

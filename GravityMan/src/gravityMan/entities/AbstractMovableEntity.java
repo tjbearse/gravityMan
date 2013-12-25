@@ -5,8 +5,6 @@ import gravityMan.util.Vector2d;
 public abstract class AbstractMovableEntity extends AbstractEntity implements
 		MovableEntity {
 	protected Vector2d vel;
-	protected double theta; // object rotation
-	protected double rotvel; // rotational velocity
 
 	public AbstractMovableEntity(double x, double y, double width, double height) {
 		super(x, y, width, height);
@@ -15,11 +13,9 @@ public abstract class AbstractMovableEntity extends AbstractEntity implements
 
 	@Override
 	public void update(int delta) {
-		//TODO change to RK4 or improved Euler
-		x += vel.getX() * delta;
-		y += vel.getY() * delta;
+		// TODO change to RK4 or improved Euler
+		pos.add(vel.scaleCpy(delta));
 	}
-
 
 	@Override
 	public double getVelX() {
@@ -55,6 +51,14 @@ public abstract class AbstractMovableEntity extends AbstractEntity implements
 
 	}
 
+	public void setVel(Vector2d vec) {
+		vel = new Vector2d(vec);
+	}
+
+	public Vector2d getVel() {
+		return new Vector2d(vel);
+	}
+
 	@Override
 	public void setVelAngleRad(double theta) {
 		vel.setAngleRad(theta);
@@ -66,13 +70,9 @@ public abstract class AbstractMovableEntity extends AbstractEntity implements
 		vel.scale(factor);
 
 	}
-
-	public void setTheta(double theta) {
-		this.theta = theta;
-	}
-
-	public double getTheta() {
-		return theta;
-	}
-
+	/*
+	 * public void setTheta(double theta) { this.theta = theta; }
+	 * 
+	 * public double getTheta() { return theta; }
+	 */
 }
