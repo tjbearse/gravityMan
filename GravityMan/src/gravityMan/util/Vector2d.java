@@ -12,7 +12,7 @@ public class Vector2d  {
 		// TODO Auto-generated constructor stub
 	}
 	
-	Vector2d(double x, double y){
+	public Vector2d(double x, double y){
 		this.x = x;
 		this.y = y;
 	}

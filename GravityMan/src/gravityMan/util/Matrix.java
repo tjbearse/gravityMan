@@ -52,5 +52,13 @@ public class Matrix {
 		double p = Math.cos(theta); //lowerRight
 		return new Matrix(m, n, o, p);
 	}
+	
+	public static Matrix projectionMatrix(Vector2d v){
+		double q = (1/(v.getMag()* v.getMag())) * (v.getX() * v.getX()); //upperLeft
+		double r = (1/(v.getMag()* v.getMag())) * (v.getX() * v.getY()); //lowerLeft
+		double s = (1/(v.getMag()* v.getMag())) * (v.getX() * v.getY());  //upperRight
+		double t = (1/(v.getMag()* v.getMag())) * (v.getY() * v.getY()); //lowerRight
+		return new Matrix(q, r, s, t);
+	}
 
 }
