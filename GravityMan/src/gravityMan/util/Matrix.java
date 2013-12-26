@@ -60,5 +60,19 @@ public class Matrix {
 		double t = (1/(v.getMag()* v.getMag())) * (v.getY() * v.getY()); //lowerRight
 		return new Matrix(q, r, s, t);
 	}
-
+	
+	public static Matrix inversionMatrix(Matrix m){
+		//TODO make an execption
+		if (1/((m.a * m.d) - (m.c * m.b)) == 0){
+			return null;
+		}
+		else{
+			double u = (1/((m.a * m.d) - (m.c * m.b))) * m.d;  //upperLeft
+			double v = (1/((m.a * m.d) - (m.c * m.b))) * -m.b; //lowerLeft
+			double w = (1/((m.a * m.d) - (m.c * m.b))) * -m.c; //upperRight
+			double x = (1/((m.a * m.d) - (m.c * m.b))) * m.a; //lowerRight
+			return new Matrix(u, v, w, x);
+			
+		}
+	}
 }
