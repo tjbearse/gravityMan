@@ -29,11 +29,12 @@ public class Game {
 	private TestObject unit;
 	private Rope rope;
 	private AbstractMovableEntity[] entities;
-	private AbstractEntity[] platforms;
-	
+
 	private double unitProp = .3;
 
-	private double airFriction = .4;
+	private double airFricLinear = .4;
+	private double airFricRot = .6;
+	
 	private Vector2d gravity = new Vector2d(0, -.00098);
 
 	// private double AngFric = .5;
@@ -58,30 +59,45 @@ public class Game {
 	}
 
 	private void logic(int delta) {
-		for(AbstractMovableEntity e : entities){
-			//gravity
-			//unit.applyForce(gravity.scaleCpy(unit.getMass()));
-			//air friction
-			unit.applyForce(unit.getVel().scale(-airFriction * unit.getVelMag()));
+		for (AbstractMovableEntity e : entities) {
+			// gravity
+			// unit.applyForce(gravity.scaleCpy(unit.getMass()));
+			// air friction
+			//		linear
+			Vector2d fricForce = unit.getVel().scale(
+					-airFricLinear * unit.getVelMag());
+			unit.applyForce(fricForce);
+			//		rotational
+			fricForce = new Vector2d(unit.getAngVel() * -airFricRot, 0);
+			Vector2d disp = new Vector2d(0, 1);
+			unit.applyForce(fricForce, disp);
+			unit.applyForce(fricForce.scale(-1));
 		}
+		// TODO move rope nodes into entities container? (avoids repetition
+		// here)
 		for (RopeNode n : rope.nodes) {
-			//n.applyForce(gravity.scaleCpy(n.getMass()));
-			n.applyForce(n.getVel().scale(-airFriction * n.getVelMag()));
+			// gravity
+			// n.applyForce(gravity.scaleCpy(n.getMass()));
+			// air friction
+			n.applyForce(n.getVel().scale(-airFricLinear * n.getVelMag()));
 		}
-		
-		for(AbstractMovableEntity e : entities){
+
+		for (AbstractMovableEntity e : entities) {
 			e.update(delta);
 		}
 
 		rope.update(delta);
-		
-		//collisions
-		//TODO restructure to use quadtree
-		
-		for(AbstractMovableEntity e : entities){
-			for(AbstractEntity p : platforms){
-				if(e.intersects(p)){
+
+		// collisions
+		// TODO restructure to use quadtree
+
+		for (int i = 0; i < entities.length; i++) {
+			for (int j = i + 1; j < entities.length; j++) {
+				if (entities[i].intersects(entities[j])) {
+					Vector2d vec = entities[i].hitbox.getCenter();
+					vec.sub(entities[j].hitbox.getCenter());
 					System.out.println("Collision");
+
 				}
 			}
 		}
@@ -118,20 +134,17 @@ public class Game {
 			}
 		}
 		Vector2d propulsion = new Vector2d(magX, magY);
-		// unit.applyForce(propulsion);
-		rope.anchorA.setVel(propulsion);
+		unit.applyForce(propulsion, new Vector2d(0, 0));
+		// rope.anchorA.setVel(propulsion);
 
 	}
 
 	private void render() {
 		glClear(GL_COLOR_BUFFER_BIT);
 		rope.draw();
-		
-		for(AbstractMovableEntity e : entities){
+
+		for (AbstractMovableEntity e : entities) {
 			e.draw();
-		}
-		for(AbstractEntity p: platforms){
-			p.draw();
 		}
 	}
 
@@ -142,18 +155,16 @@ public class Game {
 	}
 
 	private void setUpEntities() {
-		entities = new AbstractMovableEntity[1];
-		platforms = new AbstractEntity[2];
-		unit = new TestObject(WIDTH / 2, 3 * HEIGHT / 4, 15, 10, 5000);
+		entities = new AbstractMovableEntity[3];
+		unit = new TestObject(WIDTH / 2, 3 * HEIGHT / 4, 15, 10, 5000, 10000);
 		rope = new Rope(WIDTH / 2, 3 * HEIGHT / 4, 10);
-		rope.attachB(unit);
-		
-		
-		//TODO change to quadtree setup
+		rope.attachB(unit, new Vector2d(10, 0));
+
+		// TODO change to quadtree setup
 		entities[0] = unit;
-		platforms[0] = new FixedPlatform(0, HEIGHT/2, 20, HEIGHT);
-		platforms[1] = new FixedPlatform(WIDTH/2, HEIGHT/2, 100, 100);
-		
+		entities[1] = new FixedPlatform(0, HEIGHT / 2, 20, HEIGHT);
+		entities[2] = new FixedPlatform(WIDTH / 2, HEIGHT / 2, 100, 100);
+
 	}
 
 	private void setUpOpenGL() {

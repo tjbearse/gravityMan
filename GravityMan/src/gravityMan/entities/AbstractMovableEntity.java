@@ -7,19 +7,26 @@ import gravityMan.util.Vector2d;
 public abstract class AbstractMovableEntity extends AbstractEntity implements
 		MovableEntity {
 	protected Vector2d vel;
+	protected double angVel;
 
 	public abstract void applyForce(Vector2d force);
-	
+
 	public AbstractMovableEntity(double x, double y, double width, double height) {
 		super(x, y, width, height);
 		vel = new Vector2d(0, 0);
+		angVel = 0;
 	}
 
 	@Override
 	public void update(int delta) {
 		// TODO change to RK4 or improved Euler
+		// Linear
 		pos.add(vel.scaleCpy(delta));
 		hitbox.setLocation(pos);
+		// Rotational
+		theta += angVel;
+		theta %= 2 * Math.PI;
+		hitbox.setRotation(theta);
 	}
 
 	@Override
@@ -75,9 +82,12 @@ public abstract class AbstractMovableEntity extends AbstractEntity implements
 		vel.scale(factor);
 
 	}
-	/*
-	 * public void setTheta(double theta) { this.theta = theta; }
-	 * 
-	 * public double getTheta() { return theta; }
-	 */
+
+	public double getAngVel() {
+		return angVel;
+	}
+
+	public void setAngVel(double angVel) {
+		this.angVel = angVel;
+	}
 }

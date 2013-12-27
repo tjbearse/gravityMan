@@ -15,12 +15,12 @@ public class RopeNodeFixed extends AbstractFixedMoveEntity {
 	}
 
 	@Override
-	public void draw() {
+	public void doDraw() {
 		glBegin(GL_QUADS);
-		glVertex2d(pos.getX() + width / 2, pos.getY() + height / 2);
-		glVertex2d(pos.getX() + width / 2, pos.getY() - height / 2);
-		glVertex2d(pos.getX() - width / 2, pos.getY() - height / 2);
-		glVertex2d(pos.getX() - width / 2, pos.getY() + height / 2);
+		glVertex2d(width / 2, +height / 2);
+		glVertex2d(width / 2, -height / 2);
+		glVertex2d(-width / 2, -height / 2);
+		glVertex2d(-width / 2, +height / 2);
 		glEnd();
 	}
 
