@@ -62,7 +62,7 @@ public class Matrix {
 	}
 	
 	public static Matrix inversionMatrix(Matrix m){
-		//TODO make an execption
+		//TODO throw an exception
 		if (1/((m.a * m.d) - (m.c * m.b)) == 0){
 			return null;
 		}

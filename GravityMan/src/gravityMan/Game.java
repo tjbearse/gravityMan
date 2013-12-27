@@ -1,6 +1,11 @@
 package gravityMan;
 
+import java.util.ArrayList;
+
+import gravityMan.abstractEntities.entities.FixedPlatform;
 import gravityMan.abstractEntities.entities.TestObject;
+import gravityMan.entities.AbstractEntity;
+import gravityMan.entities.AbstractMovableEntity;
 import gravityMan.entities.Entity;
 import gravityMan.entities.Rope;
 import gravityMan.entities.RopeNode;
@@ -23,10 +28,10 @@ public class Game {
 
 	private TestObject unit;
 	private Rope rope;
-
+	private AbstractMovableEntity[] entities;
+	private AbstractEntity[] platforms;
+	
 	private double unitProp = .3;
-	private double unitTurnProp = .01;
-	private int unitCollision = 0;
 
 	private double airFriction = .4;
 	private Vector2d gravity = new Vector2d(0, -.00098);
@@ -53,15 +58,32 @@ public class Game {
 	}
 
 	private void logic(int delta) {
-		unit.update(delta);
-		unit.applyForce(gravity.scaleCpy(unit.getMass()));
-		unit.applyForce(unit.getVel().scale(-airFriction * unit.getVelMag()));
+		for(AbstractMovableEntity e : entities){
+			//gravity
+			//unit.applyForce(gravity.scaleCpy(unit.getMass()));
+			//air friction
+			unit.applyForce(unit.getVel().scale(-airFriction * unit.getVelMag()));
+		}
+		for (RopeNode n : rope.nodes) {
+			//n.applyForce(gravity.scaleCpy(n.getMass()));
+			n.applyForce(n.getVel().scale(-airFriction * n.getVelMag()));
+		}
+		
+		for(AbstractMovableEntity e : entities){
+			e.update(delta);
+		}
 
 		rope.update(delta);
-		for (RopeNode n : rope.nodes) {
-			n.applyForce(gravity.scaleCpy(n.getMass()));
-			n.applyForce(n.getVel().scale(-airFriction * n.getVelMag()));
-			n.applyForce(n.getVel().scaleCpy(-airFriction));
+		
+		//collisions
+		//TODO restructure to use quadtree
+		
+		for(AbstractMovableEntity e : entities){
+			for(AbstractEntity p : platforms){
+				if(e.intersects(p)){
+					System.out.println("Collision");
+				}
+			}
 		}
 	}
 
@@ -103,8 +125,14 @@ public class Game {
 
 	private void render() {
 		glClear(GL_COLOR_BUFFER_BIT);
-		unit.draw();
 		rope.draw();
+		
+		for(AbstractMovableEntity e : entities){
+			e.draw();
+		}
+		for(AbstractEntity p: platforms){
+			p.draw();
+		}
 	}
 
 	private long lastFrame;
@@ -114,9 +142,18 @@ public class Game {
 	}
 
 	private void setUpEntities() {
+		entities = new AbstractMovableEntity[1];
+		platforms = new AbstractEntity[2];
 		unit = new TestObject(WIDTH / 2, 3 * HEIGHT / 4, 15, 10, 5000);
 		rope = new Rope(WIDTH / 2, 3 * HEIGHT / 4, 10);
 		rope.attachB(unit);
+		
+		
+		//TODO change to quadtree setup
+		entities[0] = unit;
+		platforms[0] = new FixedPlatform(0, HEIGHT/2, 20, HEIGHT);
+		platforms[1] = new FixedPlatform(WIDTH/2, HEIGHT/2, 100, 100);
+		
 	}
 
 	private void setUpOpenGL() {

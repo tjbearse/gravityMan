@@ -1,13 +1,14 @@
 package gravityMan.entities;
 
 import gravityMan.abstractEntities.hitboxes.Hitbox;
+import gravityMan.abstractEntities.hitboxes.SAT;
 import gravityMan.util.Vector2d;
 
 
 public abstract class AbstractEntity implements Entity {
 	protected double width, height;
 	protected Vector2d pos;
-	protected Hitbox hitbox;
+	public Hitbox hitbox;
 	
 	public AbstractEntity(double x, double y, double width, double height) {
 		pos = new Vector2d(x, y);
@@ -17,7 +18,7 @@ public abstract class AbstractEntity implements Entity {
 
 	public boolean intersects(AbstractEntity other) {
 		// need to update hitbox locations/rotations first
-		return hitbox.intersects(hitbox);
+		return SAT.intersects(this.hitbox, other.hitbox);
 	}
 	
 	@Override

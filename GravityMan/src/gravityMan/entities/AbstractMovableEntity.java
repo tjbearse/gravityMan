@@ -2,10 +2,14 @@ package gravityMan.entities;
 
 import gravityMan.util.Vector2d;
 
+//TODO collapse abstract free & fixed movable entities into this class?
+// fixed would have empty apply force function, or just add this to fixed?
 public abstract class AbstractMovableEntity extends AbstractEntity implements
 		MovableEntity {
 	protected Vector2d vel;
 
+	public abstract void applyForce(Vector2d force);
+	
 	public AbstractMovableEntity(double x, double y, double width, double height) {
 		super(x, y, width, height);
 		vel = new Vector2d(0, 0);
@@ -15,6 +19,7 @@ public abstract class AbstractMovableEntity extends AbstractEntity implements
 	public void update(int delta) {
 		// TODO change to RK4 or improved Euler
 		pos.add(vel.scaleCpy(delta));
+		hitbox.setLocation(pos);
 	}
 
 	@Override

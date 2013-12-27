@@ -3,6 +3,8 @@ package gravityMan.entities;
 import gravityMan.util.Vector2d;
 import static org.lwjgl.opengl.GL11.*;
 
+
+//TODO: migrate to ropes package
 public class Rope {
 	public RopeNode[] nodes;
 	public RopeNodeFixed anchorA;
