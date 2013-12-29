@@ -1,6 +1,8 @@
 package gravityMan;
 
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.ListIterator;
 
 import gravityMan.abstractEntities.entities.FixedPlatform;
 import gravityMan.abstractEntities.entities.TestObject;
@@ -28,13 +30,13 @@ public class Game {
 
 	private TestObject unit;
 	private Rope rope;
-	private AbstractMovableEntity[] entities;
+	private ArrayList<AbstractMovableEntity> entities;
 
 	private double unitProp = .3;
 
 	private double airFricLinear = .4;
 	private double airFricRot = .6;
-	
+
 	private Vector2d gravity = new Vector2d(0, -.00098);
 
 	// private double AngFric = .5;
@@ -61,13 +63,13 @@ public class Game {
 	private void logic(int delta) {
 		for (AbstractMovableEntity e : entities) {
 			// gravity
-			 e.applyForce(gravity.scaleCpy(unit.getMass()));
+			e.applyForce(gravity.scaleCpy(unit.getMass()));
 			// air friction
-			//		linear
+			// linear
 			Vector2d fricForce = e.getVel().scale(
 					-airFricLinear * unit.getVelMag());
 			e.applyForce(fricForce);
-			//		rotational
+			// rotational
 			fricForce = new Vector2d(unit.getAngVel() * -airFricRot, 0);
 			Vector2d disp = new Vector2d(0, 1);
 			e.applyForce(fricForce, disp);
@@ -90,12 +92,15 @@ public class Game {
 
 		// collisions
 		// TODO restructure to use quadtree
-
-		for (int i = 0; i < entities.length; i++) {
-			for (int j = i + 1; j < entities.length; j++) {
-				if (entities[i].intersects(entities[j])) {
-					Vector2d vec = entities[i].hitbox.getCenter();
-					vec.sub(entities[j].hitbox.getCenter());
+		ListIterator<AbstractMovableEntity> itrA = entities.listIterator();
+		while (itrA.hasNext()) {
+			AbstractMovableEntity a = itrA.next();
+			Iterator<AbstractMovableEntity> itrB = entities.listIterator(itrA
+					.nextIndex());
+			while (itrB.hasNext()) {
+				AbstractMovableEntity b = itrB.next();
+				if (b.intersects(a)) {
+					// collision happened
 				}
 			}
 		}
@@ -140,7 +145,7 @@ public class Game {
 	private void render() {
 		glClear(GL_COLOR_BUFFER_BIT);
 		rope.draw();
-		//TODO need to do z-layering somehow
+		// TODO need to do z-layering somehow
 		for (AbstractMovableEntity e : entities) {
 			e.draw();
 		}
@@ -153,16 +158,17 @@ public class Game {
 	}
 
 	private void setUpEntities() {
-		entities = new AbstractMovableEntity[3];
+		entities = new ArrayList<AbstractMovableEntity>();
 		unit = new TestObject(WIDTH / 2, 3 * HEIGHT / 4, 40, 10, 5000, 1000000);
 		rope = new Rope(WIDTH / 2, 49 * HEIGHT / 50, 10);
 		rope.attachB(unit, new Vector2d(20, 0));
 
 		// TODO change to quadtree setup
-		entities[0] = unit;
-		entities[1] = new FixedPlatform(0, HEIGHT / 2, 20, HEIGHT);
-		entities[2] = new FixedPlatform(WIDTH/2, 0 , WIDTH, 20);
-
+		entities.add(unit);
+		entities.add(new FixedPlatform(10, HEIGHT / 2, 20, HEIGHT));
+		entities.add(new FixedPlatform(WIDTH - 10, HEIGHT / 2, 20, HEIGHT));
+		entities.add(new FixedPlatform(WIDTH / 2, 10, WIDTH, 20));
+		entities.add(new FixedPlatform(WIDTH / 2, HEIGHT-10, WIDTH, 20));
 	}
 
 	private void setUpOpenGL() {
