@@ -12,6 +12,7 @@ abstract public class Hitbox {
 		pos = new Vector2d(vec);
 	}
 	
+	//TODO incorporate rotation
 	abstract public Vector2d[] getFaces();
 
 	abstract public Range getProjRange(Matrix proj);

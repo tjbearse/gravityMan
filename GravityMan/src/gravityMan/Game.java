@@ -61,17 +61,17 @@ public class Game {
 	private void logic(int delta) {
 		for (AbstractMovableEntity e : entities) {
 			// gravity
-			// unit.applyForce(gravity.scaleCpy(unit.getMass()));
+			 e.applyForce(gravity.scaleCpy(unit.getMass()));
 			// air friction
 			//		linear
-			Vector2d fricForce = unit.getVel().scale(
+			Vector2d fricForce = e.getVel().scale(
 					-airFricLinear * unit.getVelMag());
-			unit.applyForce(fricForce);
+			e.applyForce(fricForce);
 			//		rotational
 			fricForce = new Vector2d(unit.getAngVel() * -airFricRot, 0);
 			Vector2d disp = new Vector2d(0, 1);
-			unit.applyForce(fricForce, disp);
-			unit.applyForce(fricForce.scale(-1));
+			e.applyForce(fricForce, disp);
+			e.applyForce(fricForce.scale(-1));
 		}
 		// TODO move rope nodes into entities container? (avoids repetition
 		// here)
@@ -96,8 +96,6 @@ public class Game {
 				if (entities[i].intersects(entities[j])) {
 					Vector2d vec = entities[i].hitbox.getCenter();
 					vec.sub(entities[j].hitbox.getCenter());
-					System.out.println("Collision");
-
 				}
 			}
 		}
@@ -142,7 +140,7 @@ public class Game {
 	private void render() {
 		glClear(GL_COLOR_BUFFER_BIT);
 		rope.draw();
-
+		//TODO need to do z-layering somehow
 		for (AbstractMovableEntity e : entities) {
 			e.draw();
 		}
@@ -156,14 +154,14 @@ public class Game {
 
 	private void setUpEntities() {
 		entities = new AbstractMovableEntity[3];
-		unit = new TestObject(WIDTH / 2, 3 * HEIGHT / 4, 15, 10, 5000, 10000);
-		rope = new Rope(WIDTH / 2, 3 * HEIGHT / 4, 10);
-		rope.attachB(unit, new Vector2d(10, 0));
+		unit = new TestObject(WIDTH / 2, 3 * HEIGHT / 4, 40, 10, 5000, 1000000);
+		rope = new Rope(WIDTH / 2, 49 * HEIGHT / 50, 10);
+		rope.attachB(unit, new Vector2d(20, 0));
 
 		// TODO change to quadtree setup
 		entities[0] = unit;
 		entities[1] = new FixedPlatform(0, HEIGHT / 2, 20, HEIGHT);
-		entities[2] = new FixedPlatform(WIDTH / 2, HEIGHT / 2, 100, 100);
+		entities[2] = new FixedPlatform(WIDTH/2, 0 , WIDTH, 20);
 
 	}
 

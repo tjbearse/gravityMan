@@ -15,5 +15,5 @@ public interface Entity {
 		public double getY();
 		public double getHeight();
 		public double getWidth();
-
+		//TODO needs updating
 }

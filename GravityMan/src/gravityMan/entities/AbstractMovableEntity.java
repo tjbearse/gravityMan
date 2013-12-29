@@ -10,6 +10,7 @@ public abstract class AbstractMovableEntity extends AbstractEntity implements
 	protected double angVel;
 
 	public abstract void applyForce(Vector2d force);
+	public abstract void applyForce(Vector2d force, Vector2d disp);
 
 	public AbstractMovableEntity(double x, double y, double width, double height) {
 		super(x, y, width, height);

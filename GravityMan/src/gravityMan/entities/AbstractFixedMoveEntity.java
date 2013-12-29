@@ -10,4 +10,5 @@ abstract public class AbstractFixedMoveEntity extends AbstractMovableEntity {
 	}
 	
 	public void applyForce(Vector2d force){	}
+	public void applyForce(Vector2d force, Vector2d disp){ }
 }

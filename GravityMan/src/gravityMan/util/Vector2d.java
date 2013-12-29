@@ -132,8 +132,6 @@ public class Vector2d {
 	}
 
 	public double cross(Vector2d b) {
-		double theta = b.getAngleDeg() - this.getAngleDeg();
-		return Math.sin(theta) * this.getMag() * b.getMag();
+		return (b.x * this.y) - (this.x * b.y);
 	}
-
 }

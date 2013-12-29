@@ -106,7 +106,6 @@ public class Rope {
 					nodes[i - j].applyForce(force.scaleCpy(-1));
 				}
 			}
-
 			for (int i = 0; i < j && nodes.length - i > 0; i++) {
 				dist = anchorBLoc.subCpy(nodes[nodes.length - i - 1]
 						.getLocation());
@@ -116,8 +115,7 @@ public class Rope {
 
 					nodes[nodes.length - i - 1].applyForce(force.scale(j - i));
 
-					Vector2d disp = anchorB.getLocation().subCpy(anchorBLoc);
-					System.out.println(disp.getMag());
+					Vector2d disp = anchorBLoc.subCpy(anchorB.getLocation());
 					anchorB.applyForce(force.scale(-1), disp);
 				}
 			}
@@ -139,7 +137,7 @@ public class Rope {
 			glVertex2d(nodes[i].getX(), nodes[i].getY());
 			glVertex2d(nodes[i].getX(), nodes[i].getY());
 		}
-		glVertex2d(anchorB.getX(), anchorB.getY());
+		glVertex2d(anchorBLoc.getX(), anchorBLoc.getY());
 		glEnd();
 	}
 }

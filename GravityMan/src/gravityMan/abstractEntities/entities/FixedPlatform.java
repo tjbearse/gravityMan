@@ -31,5 +31,7 @@ public class FixedPlatform extends AbstractMovableEntity {
 
 	@Override
 	public void applyForce(Vector2d force) {}
+	@Override
+	public void applyForce(Vector2d force, Vector2d disp){ }
 
 }
