@@ -47,8 +47,8 @@ public class Matrix {
 	
 	public static Matrix rotationMatrix(double theta){
 		double m = Math.cos(theta); //upperLeft
-		double n = -Math.sin(theta); //lowerLeft
-		double o = Math.sin(theta); //upperRight
+		double n = Math.sin(theta); //lowerLeft
+		double o = -Math.sin(theta); //upperRight
 		double p = Math.cos(theta); //lowerRight
 		return new Matrix(m, n, o, p);
 	}
