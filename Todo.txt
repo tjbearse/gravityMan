@@ -1,0 +1,67 @@
+Todo:
+	Physics Engine
+		Clean structure
+			Entities
+				is movablefixed necessarry?
+				are there any non-AbstractFreeMovableEntity classes
+			Get rid of unused classes
+			Reorganize packages
+		Collision detection
+			make quadtree for collision detection [Heather]
+				find nice numbers
+			Fix redundant vector function in SAT class (removing too many vectors?) [Heather]
+		Collision handling
+			Impulse or force based?
+		Rigid Body Chaining
+			system for fixed pivots for rigid bodies
+			system for resolving the forces on a chain of rigid bodies
+		Motors [Heather & TJ]
+			(method of creating moving platforms)
+			(method of moving player also?)
+		Encapsulate physics engine?
+			move logic (i.e. gravity, collisions, friction, direct input to forces) to physics engine class
+			make interface for the game to control engine
+				add items
+				motors for controlling objects, gravity
+				how to handle special collisions? (e.g. endzone, hazard contact, etc)
+					call back function to game
+					overriden collision handle operators
+					modify state/flag vaiables
+		Drawing
+			z-indexing / layering
+	Game play
+		Game loop
+			step back from constructor only approach?
+		Levels
+			design content
+			load/store procedures
+		Objects
+			Rope
+				rope throwing
+					cross hairs
+				rope attachment
+				rope attachability
+			gravity man class
+			more platform shapes
+			hazards
+		Visual
+			Add color/texture support for objects [Heather & TJ]
+				store only style and keep data outside of class?
+				store inside class?
+			Object color effects
+				alpha / tranparency
+			background
+				how to manipulate
+			hud/gui design [Heather & TJ]
+				gravity vector 
+				cross hairs
+				menus, menu buttons
+		Controls
+			savable key mappings
+				how to load/store
+			gravity vector
+			cross hair move
+			rope shoot
+			rope disconnect
+			
+				
