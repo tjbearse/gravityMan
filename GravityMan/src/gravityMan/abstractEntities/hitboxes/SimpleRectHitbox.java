@@ -16,35 +16,46 @@ public class SimpleRectHitbox extends Hitbox {
 
 	@Override
 	public Vector2d[] getFaces() {
+		// TODO can save on reproducing multiple times each cycle?
+		Matrix m = Matrix.rotationMatrix(theta);
 		Vector2d[] faces = new Vector2d[2];
-		faces[0] = new Vector2d(0, 1);
-		faces[1] = new Vector2d(1, 0);
+		faces[0] = m.multiply(new Vector2d(0, 1));
+		faces[1] = m.multiply(new Vector2d(1, 0));
 		return faces;
 	}
 
 	@Override
 	public Range getProjRange(Matrix proj) {
+		// TODO make matrix to combine rotate, trans, proj (affine?)
+		Matrix rot = Matrix.rotationMatrix(theta);
+		
 		// top left
-		Vector2d vec = new Vector2d(pos.getX() - width / 2, pos.getY() + height
-				/ 2);
-		Vector2d projVec = proj.multiply(vec);
-		Range r = new Range(projVec.getMag(), projVec.getMag());
+		Vector2d vec = rot.multiply(new Vector2d(-width / 2, height / 2));
+		vec.add(pos);
+		vec = proj.multiply(vec);
+		int sign = vec.getAngleRad() > Math.PI ? 1 : -1;
+		Range r = new Range(vec.getMag() * sign, vec.getMag() * sign);
 
 		// top right
-		vec.setX(pos.getX() + width / 2);
-		projVec = proj.multiply(vec);
-		r.add(projVec.getMag());
+		vec = rot.multiply(new Vector2d(width / 2, height / 2));
+		vec.add(pos);
+		vec = proj.multiply(vec);
+		sign = vec.getAngleRad() > Math.PI ? 1 : -1;
+		r.add(vec.getMag() * sign);
 
 		// bottom right
-		vec.setY(pos.getY() - height / 2);
-		projVec = proj.multiply(vec);
-		r.add(projVec.getMag());
+		vec = rot.multiply(new Vector2d(width / 2, -height / 2));
+		vec.add(pos);
+		vec = proj.multiply(vec);
+		sign = vec.getAngleRad() > Math.PI ? 1 : -1;
+		r.add(vec.getMag() * sign);
 
 		// bottom left
-		vec.setX(pos.getX() - width / 2);
-		projVec = proj.multiply(vec);
-		r.add(projVec.getMag());
-		
+		vec = rot.multiply(new Vector2d(-width / 2, -height / 2));
+		vec.add(pos);
+		vec = proj.multiply(vec);
+		sign = vec.getAngleRad() > Math.PI ? 1 : -1;
+		r.add(vec.getMag() * sign);
 		return r;
 	}
 }

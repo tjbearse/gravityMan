@@ -7,19 +7,6 @@ import gravityMan.util.Matrix;
 import gravityMan.util.Vector2d;
 
 public final class SAT {
-	static public boolean intersects(SimpleRectHitbox a, SimpleRectHitbox b) {
-		Vector2d diff = a.pos.subCpy(b.pos);
-
-		System.out.println("hahaha");
-		if (Math.abs(diff.getX()) > (a.width + b.width) / 2) {
-			return false;
-		}
-		if (Math.abs(diff.getY()) > (a.height + a.height) / 2) {
-			return false;
-		}
-
-		return true;
-	}
 
 	static public boolean intersects(Hitbox a, Hitbox b) {
 		// get faces in form of vectors
@@ -30,8 +17,8 @@ public final class SAT {
 		for (Vector2d faceA : facesA) {
 			boolean redundant = false;
 			for (Vector2d faceB : facesB) {
-				if (redundant(faceA, faceB)) {
-					redundant = true;
+				if (redundant(faceA, faceB)) { // FIXME redundant is broken?
+					//redundant = true;
 				}
 			}
 			if (!redundant) {
@@ -83,10 +70,10 @@ public final class SAT {
 				end = val;
 			}
 		}
-
+		// if a, b, A or b, a, B
 		public static boolean intersects(Range a, Range b) {
-			return (a.start < b.start && a.end > b.start)
-					|| (a.start > b.start && a.start < b.end);
+			return (a.start <= b.start && b.start <= a.end)
+					|| (a.start >= b.start && a.start <= b.end);
 		}
 	}
 }

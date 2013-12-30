@@ -16,10 +16,9 @@ public class FixedPlatform extends AbstractMovableEntity {
 	@Override
 	public void doDraw() {
 		glBegin(GL_QUADS);
-		glColor3d(0, 1, 1);
+		glColor3d(.5, .5, .5);
 		glVertex2d(width / 2, -height / 2);
 		glVertex2d(- width / 2,- height / 2);
-		glColor3d(1, 1, 0);
 		glVertex2d(- width / 2,height / 2);
 		glVertex2d(width / 2, height / 2);
 		glEnd();
