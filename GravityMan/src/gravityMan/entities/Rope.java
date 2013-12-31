@@ -90,8 +90,6 @@ public class Rope {
 		updateAnchorA();
 		updateAnchorB();
 		TensionForces();
-		anchorA.update(delta);
-		// anchorB.update(delta);
 		for (RectEntity r : nodes) {
 			r.update(delta);
 		}
