@@ -25,7 +25,5 @@ public class FixedPlatform extends AbstractFixedMoveEntity {
 		
 	}
 
-	@Override
-	public void update(int delta) {}
 
 }
