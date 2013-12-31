@@ -4,11 +4,11 @@ import gravityMan.abstractEntities.hitboxes.SAT.Range;
 import gravityMan.util.Matrix;
 import gravityMan.util.Vector2d;
 
-public class SimpleRectHitbox extends Hitbox {
+public class RectHitbox extends Hitbox {
 	double width, height;
 
 	//TODO incorporate rotation
-	public SimpleRectHitbox(double x, double y, double width, double height) {
+	public RectHitbox(double x, double y, double width, double height) {
 		pos = new Vector2d(x, y);
 		this.width = width;
 		this.height = height;

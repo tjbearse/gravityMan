@@ -1,6 +1,6 @@
 package gravityMan.abstractEntities.entities;
 
-import gravityMan.abstractEntities.hitboxes.SimpleRectHitbox;
+import gravityMan.abstractEntities.hitboxes.RectHitbox;
 import gravityMan.entities.AbstractFreeMoveEntity;
 import gravityMan.util.RungeKutta;
 import gravityMan.util.Vector2d;
@@ -13,7 +13,7 @@ public class TestObject extends AbstractFreeMoveEntity {
 		super(x, y, mass, inertia);
 		this.width = width;
 		this.height = height;
-		hitbox = new SimpleRectHitbox(x, y, width, height);
+		hitbox = new RectHitbox(x, y, width, height);
 	}
 
 	@Override

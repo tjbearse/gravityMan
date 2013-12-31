@@ -1,7 +1,7 @@
 package gravityMan.abstractEntities.entities;
 
 import static org.lwjgl.opengl.GL11.*;
-import gravityMan.abstractEntities.hitboxes.SimpleRectHitbox;
+import gravityMan.abstractEntities.hitboxes.RectHitbox;
 import gravityMan.entities.AbstractEntity;
 import gravityMan.entities.AbstractMovableEntity;
 import gravityMan.util.Vector2d;
@@ -12,7 +12,7 @@ public class FixedPlatform extends AbstractMovableEntity {
 		super(x, y);
 		this.width = width;
 		this.height = height;
-		hitbox = new SimpleRectHitbox(x, y, width, height);
+		hitbox = new RectHitbox(x, y, width, height);
 	}
 
 	@Override

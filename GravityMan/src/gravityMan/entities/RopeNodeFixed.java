@@ -4,7 +4,7 @@ import static org.lwjgl.opengl.GL11.GL_QUADS;
 import static org.lwjgl.opengl.GL11.glBegin;
 import static org.lwjgl.opengl.GL11.glEnd;
 import static org.lwjgl.opengl.GL11.glVertex2d;
-import gravityMan.abstractEntities.hitboxes.SimpleRectHitbox;
+import gravityMan.abstractEntities.hitboxes.RectHitbox;
 import gravityMan.util.Vector2d;
 
 //TODO migrate to ropes package
@@ -12,7 +12,7 @@ public class RopeNodeFixed extends AbstractFixedMoveEntity {
 	private double width = 8, height = 8;
 	public RopeNodeFixed(double x, double y) {
 		super(x, y);
-		hitbox = new SimpleRectHitbox(x, y, width, height);
+		hitbox = new RectHitbox(x, y, width, height);
 	}
 
 	@Override

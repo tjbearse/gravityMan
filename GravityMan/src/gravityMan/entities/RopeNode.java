@@ -1,7 +1,7 @@
 package gravityMan.entities;
 
 import static org.lwjgl.opengl.GL11.*;
-import gravityMan.abstractEntities.hitboxes.SimpleRectHitbox;
+import gravityMan.abstractEntities.hitboxes.RectHitbox;
 import gravityMan.util.RungeKutta;
 import gravityMan.util.Vector2d;
 
@@ -11,7 +11,7 @@ public class RopeNode extends AbstractFreeMoveEntity {
 	public RopeNode(double x, double y, double mass) {
 		super(x, y, mass, mass);
 		//TODO: make this a point hitbox?
-		hitbox = new SimpleRectHitbox(x, y, width, height);
+		hitbox = new RectHitbox(x, y, width, height);
 	}
 
 	
