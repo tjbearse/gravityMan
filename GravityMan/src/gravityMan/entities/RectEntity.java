@@ -5,12 +5,12 @@ import gravityMan.entities.abstractEntities.AbstractFreeMoveEntity;
 import gravityMan.entities.hitboxes.RectHitbox;
 import gravityMan.util.Vector2d;
 
-//TODO move to rope package
-public class RopeNode extends AbstractFreeMoveEntity {
-	private double width = 3, height = 3;
-	public RopeNode(double x, double y, double mass) {
-		super(x, y, mass, mass);
-		//TODO: make this a point hitbox?
+public class RectEntity extends AbstractFreeMoveEntity {
+	private double width, height;
+	public RectEntity(double x, double y, double width, double height, double mass, double inertia) {
+		super(x, y, mass, inertia);
+		this.width = width;
+		this.height = height;
 		hitbox = new RectHitbox(x, y, width, height);
 	}
 

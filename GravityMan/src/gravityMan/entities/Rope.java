@@ -1,24 +1,28 @@
 package gravityMan.entities;
 
-import gravityMan.entities.abstractEntities.AbstractFreeMoveEntity;
+import gravityMan.entities.abstractEntities.AbstractMovableEntity;
 import gravityMan.util.Vector2d;
 import static org.lwjgl.opengl.GL11.*;
 
-//TODO: migrate to ropes package
 public class Rope {
-	public RopeNode[] nodes;
-	public RopeNodeFixed anchorA;
-	public AbstractFreeMoveEntity anchorB;
+	public RectEntity[] nodes;
+	public AbstractMovableEntity anchorA;
+	public AbstractMovableEntity anchorB;
 
-	protected Vector2d anchorBDisp; // attachment point, relative to unrotated
-	protected Vector2d anchorBLoc; // actual attachment point
-	// These vals work (even with attached item)
-	// protected double equilLen = 5;
-	// protected double springConst = .06;
-	// protected double nodeMass = 100;
+	// Relative attachment point
+	protected Vector2d anchorADisp;
+	protected Vector2d anchorBDisp;
+	// Absolute attachment point
+	protected Vector2d anchorALoc;
+	protected Vector2d anchorBLoc;
+	
+	// Spring Constants
 	protected double equilLen = 5;
 	protected double springConst = .01;
+	
+	// Node attributes
 	protected double nodeMass = 100;
+	protected double nodeSize = 2;
 
 	public Rope() {
 		nodes = null;
@@ -28,42 +32,67 @@ public class Rope {
 		if (nodes.length == 1) {
 			return;
 		} else {
-			RopeNode[] temp = nodes;
-			nodes = new RopeNode[nodes.length - 1];
+			RectEntity[] temp = nodes;
+			nodes = new RectEntity[nodes.length - 1];
 			System.arraycopy(temp, 0, nodes, 0, nodes.length);
 		}
 	}
 
 	public void addNode() {
-		RopeNode[] temp = nodes;
-		nodes = new RopeNode[nodes.length + 1];
+		RectEntity[] temp = nodes;
+		nodes = new RectEntity[nodes.length + 1];
 		System.arraycopy(temp, 0, nodes, 0, temp.length);
-		nodes[nodes.length - 1] = new RopeNode(nodes[nodes.length - 2].getX(),
-				nodes[nodes.length - 2].getY(), nodeMass);
+		nodes[nodes.length - 1] = new RectEntity(
+				nodes[nodes.length - 2].getX(), nodes[nodes.length - 2].getY(),
+				nodeSize, nodeSize, nodeMass, nodeMass);
 	}
 
-	public Rope(double x, double y, int num) {
-		nodes = new RopeNode[num - 1];
-		anchorA = new RopeNodeFixed(x, y);
-		// anchorB = new RopeNodeFixed(x, y);
+	// TODO make rope builder class?
+	public Rope(int num, AbstractMovableEntity a, Vector2d dispA,
+			AbstractMovableEntity b, Vector2d dispB) {
+		nodes = new RectEntity[num - 1];
+		double xInc = (a.getX() - b.getX()) / num;
+		double yInc = (a.getY() - b.getY()) / num;
+
+		double x = a.getX();
+		double y = a.getY();
+
 		for (int i = 0; i < num - 1; i++) {
-			nodes[i] = new RopeNode(x, y, nodeMass);
+			nodes[i] = new RectEntity(x, y, nodeSize, nodeSize, nodeMass, nodeMass);
+			x += xInc;
+			y += yInc;
 		}
-		anchorBDisp = new Vector2d(0, 0);
+
+		attachA(a, dispA);
+		attachB(b, dispB);
 	}
 
-	public void attachB(AbstractFreeMoveEntity anchor, Vector2d disp) {
+	// TODO way to generalize these functions / anchor concept?
+	public void attachA(AbstractMovableEntity anchor, Vector2d disp) {
+		if (anchor == null) {
+			throw new NullPointerException();
+		}
+		anchorA = anchor;
+		anchorADisp = disp;
+		updateAnchorA();
+	}
+
+	public void attachB(AbstractMovableEntity anchor, Vector2d disp) {
+		if (anchor == null) {
+			throw new NullPointerException();
+		}
 		anchorB = anchor;
 		anchorBDisp = disp;
 		updateAnchorB();
 	}
 
 	public void update(int delta) {
+		updateAnchorA();
 		updateAnchorB();
 		TensionForces();
 		anchorA.update(delta);
 		// anchorB.update(delta);
-		for (RopeNode r : nodes) {
+		for (RectEntity r : nodes) {
 			r.update(delta);
 		}
 
@@ -79,6 +108,16 @@ public class Rope {
 		anchorBLoc.add(anchorB.getLocation());
 	}
 
+	private void updateAnchorA() {
+		// find new anchor location
+		// displacement
+		anchorALoc = new Vector2d(anchorADisp);
+		// rotation
+		anchorALoc.setAngleRad(anchorALoc.getAngleRad() + anchorA.getTheta());
+		// position
+		anchorALoc.add(anchorA.getLocation());
+	}
+
 	private void TensionForces() {
 		Vector2d dist;
 		Vector2d x;
@@ -87,12 +126,15 @@ public class Rope {
 
 		for (int j = 1; j <= 5; j++) {
 			for (int i = 0; i < j && i < nodes.length; i++) {
-				dist = anchorA.getLocation().subCpy(nodes[i].getLocation());
+				dist = anchorALoc.subCpy(nodes[i].getLocation());
 				if (dist.getMag() > equilLen * (i + 1)) {
 					x = dist.scaleCpy(equilLen * (i + 1) / dist.getMag());
 					force = dist.subCpy(x).scaleCpy(springConst);
 
 					nodes[i].applyForce(force.scale(j - i));
+
+					Vector2d disp = anchorALoc.subCpy(anchorA.getLocation());
+					anchorA.applyForce(force.scale(-1), disp);
 				}
 			}
 
@@ -126,12 +168,11 @@ public class Rope {
 	}
 
 	public void draw() {
-		anchorA.draw();
-		// anchorB.draw();
-		for (RopeNode r : nodes) {
+		for (RectEntity r : nodes) {
 			r.draw();
 		}
 		glBegin(GL_LINES);
+		glColor3d(0, .5, .5);
 		glVertex2d(anchorA.getX(), anchorA.getY());
 		for (int i = 0; i < nodes.length; i++) {
 			// nodes[i].draw();

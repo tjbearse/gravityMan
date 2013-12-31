@@ -6,7 +6,7 @@ import java.util.ListIterator;
 
 import gravityMan.entities.FixedPlatform;
 import gravityMan.entities.Rope;
-import gravityMan.entities.RopeNode;
+import gravityMan.entities.RectEntity;
 import gravityMan.entities.TestObject;
 import gravityMan.entities.abstractEntities.AbstractEntity;
 import gravityMan.entities.abstractEntities.AbstractMovableEntity;
@@ -32,7 +32,7 @@ public class Game {
 	private Rope rope;
 	private ArrayList<AbstractMovableEntity> entities;
 
-	private double unitProp = .3;
+	private double unitProp = .6;
 
 	private double airFricLinear = .4;
 	private double airFricRot = .6;
@@ -77,9 +77,9 @@ public class Game {
 		}
 		// TODO move rope nodes into entities container? (avoids repetition
 		// here)
-		for (RopeNode n : rope.nodes) {
+		for (RectEntity n : rope.nodes) {
 			// gravity
-			// n.applyForce(gravity.scaleCpy(n.getMass()));
+			n.applyForce(gravity.scaleCpy(n.getMass()));
 			// air friction
 			n.applyForce(n.getVel().scale(-airFricLinear * n.getVelMag()));
 		}
@@ -137,8 +137,7 @@ public class Game {
 			}
 		}
 		Vector2d propulsion = new Vector2d(magX, magY);
-		unit.applyForce(propulsion, new Vector2d(0, 0));
-		// rope.anchorA.setVel(propulsion);
+		rope.anchorB.setVel(propulsion);
 
 	}
 
@@ -160,15 +159,18 @@ public class Game {
 	private void setUpEntities() {
 		entities = new ArrayList<AbstractMovableEntity>();
 		unit = new TestObject(WIDTH / 2, 3 * HEIGHT / 4, 40, 10, 5000, 1000000);
-		rope = new Rope(WIDTH / 2, 49 * HEIGHT / 50, 10);
-		rope.attachB(unit, new Vector2d(20, 0));
 
-		// TODO change to quadtree setup
-		entities.add(unit);
+		rope = new Rope(10, new RectEntity(WIDTH / 2, HEIGHT / 2, 30, 30, 10000, 100000),
+				new Vector2d(15, 0), new FixedPlatform(WIDTH / 2,
+						4 * HEIGHT / 5, 20, 20), new Vector2d(0, -10));
+
+		// add rope directly into entities
+		entities.add(rope.anchorA);
+		entities.add(rope.anchorB);
 		entities.add(new FixedPlatform(10, HEIGHT / 2, 20, HEIGHT));
 		entities.add(new FixedPlatform(WIDTH - 10, HEIGHT / 2, 20, HEIGHT));
 		entities.add(new FixedPlatform(WIDTH / 2, 10, WIDTH, 20));
-		entities.add(new FixedPlatform(WIDTH / 2, HEIGHT-10, WIDTH, 20));
+		entities.add(new FixedPlatform(WIDTH / 2, HEIGHT - 10, WIDTH, 20));
 	}
 
 	private void setUpOpenGL() {
