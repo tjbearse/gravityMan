@@ -44,7 +44,6 @@ public final class SAT {
 	}
 
 	static private boolean redundant(Vector2d a, Vector2d b) {
-		// TODO: double check this method
 		// % by PI to account for opposite direction redundancies
 		return a.getAngleRad() % Math.PI != b.getAngleDeg() % Math.PI;
 	}

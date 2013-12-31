@@ -25,7 +25,7 @@ public class Vector2d {
 	}
 
 	// returns self (for nesting operations)
-	// TODO replace unneeded copies with edit same thing, espec. rope + updates
+	// TODO make all these functions return copy only?
 	public Vector2d scale(double factor) {
 		double theta = getAngleRad();
 		double mag = getMag();

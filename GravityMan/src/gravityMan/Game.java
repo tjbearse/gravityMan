@@ -73,8 +73,6 @@ public class Game {
 			e.applyForce(fricForce, disp);
 			e.applyForce(fricForce.scale(-1));
 		}
-		// TODO move rope nodes into entities container? (avoids repetition
-		// here)
 		for (RectEntity n : rope.nodes) {
 			// gravity
 			n.applyForce(gravity.scaleCpy(n.getMass()));
@@ -142,7 +140,7 @@ public class Game {
 	private void render() {
 		glClear(GL_COLOR_BUFFER_BIT);
 		rope.draw();
-		// TODO need to do z-layering somehow
+		// TODO need to add z-layering
 		for (AbstractMovableEntity e : entities) {
 			e.draw();
 		}

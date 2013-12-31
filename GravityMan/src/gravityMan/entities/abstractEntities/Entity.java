@@ -11,5 +11,5 @@ public interface Entity {
 		
 		public double getX();
 		public double getY();
-		//TODO needs updating
+		//TODO needs updating / is needed?
 }

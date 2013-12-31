@@ -7,7 +7,6 @@ import gravityMan.util.Vector2d;
 public class RectHitbox extends Hitbox {
 	double width, height;
 
-	//TODO incorporate rotation
 	public RectHitbox(double x, double y, double width, double height) {
 		pos = new Vector2d(x, y);
 		this.width = width;

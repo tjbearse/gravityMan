@@ -2,8 +2,6 @@ package gravityMan.entities.abstractEntities;
 
 import gravityMan.util.Vector2d;
 
-//TODO collapse abstract free & fixed movable entities into this class?
-// fixed would have empty apply force function, or just add this to fixed?
 public abstract class AbstractMovableEntity extends AbstractEntity implements
 		MovableEntity {
 	protected Vector2d vel;
