@@ -2,11 +2,9 @@ package gravityMan.abstractEntities.entities;
 
 import static org.lwjgl.opengl.GL11.*;
 import gravityMan.abstractEntities.hitboxes.RectHitbox;
-import gravityMan.entities.AbstractEntity;
-import gravityMan.entities.AbstractMovableEntity;
-import gravityMan.util.Vector2d;
+import gravityMan.entities.AbstractFixedMoveEntity;
 
-public class FixedPlatform extends AbstractMovableEntity {
+public class FixedPlatform extends AbstractFixedMoveEntity {
 	private double width, height;
 	public FixedPlatform(double x, double y, double width, double height) {
 		super(x, y);
@@ -29,10 +27,5 @@ public class FixedPlatform extends AbstractMovableEntity {
 
 	@Override
 	public void update(int delta) {}
-
-	@Override
-	public void applyForce(Vector2d force) {}
-	@Override
-	public void applyForce(Vector2d force, Vector2d disp){ }
 
 }
