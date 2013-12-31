@@ -1,8 +1,8 @@
-package gravityMan.abstractEntities.hitboxes;
+package gravityMan.entities.hitboxes;
 
 import java.util.ArrayList;
 
-import gravityMan.entities.AbstractEntity;
+import gravityMan.entities.abstractEntities.AbstractEntity;
 import gravityMan.util.Matrix;
 import gravityMan.util.Vector2d;
 

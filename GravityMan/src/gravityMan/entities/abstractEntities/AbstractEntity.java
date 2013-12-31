@@ -1,7 +1,7 @@
-package gravityMan.entities;
+package gravityMan.entities.abstractEntities;
 
-import gravityMan.abstractEntities.hitboxes.Hitbox;
-import gravityMan.abstractEntities.hitboxes.SAT;
+import gravityMan.entities.hitboxes.Hitbox;
+import gravityMan.entities.hitboxes.SAT;
 import gravityMan.util.Vector2d;
 import static org.lwjgl.opengl.GL11.*;
 

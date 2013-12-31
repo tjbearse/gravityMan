@@ -4,13 +4,13 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.ListIterator;
 
-import gravityMan.abstractEntities.entities.FixedPlatform;
-import gravityMan.abstractEntities.entities.TestObject;
-import gravityMan.entities.AbstractEntity;
-import gravityMan.entities.AbstractMovableEntity;
-import gravityMan.entities.Entity;
+import gravityMan.entities.FixedPlatform;
 import gravityMan.entities.Rope;
 import gravityMan.entities.RopeNode;
+import gravityMan.entities.TestObject;
+import gravityMan.entities.abstractEntities.AbstractEntity;
+import gravityMan.entities.abstractEntities.AbstractMovableEntity;
+import gravityMan.entities.abstractEntities.Entity;
 import gravityMan.util.Vector2d;
 
 import org.lwjgl.*;

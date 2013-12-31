@@ -1,8 +1,7 @@
-package gravityMan.abstractEntities.entities;
+package gravityMan.entities;
 
-import gravityMan.abstractEntities.hitboxes.RectHitbox;
-import gravityMan.entities.AbstractFreeMoveEntity;
-import gravityMan.util.RungeKutta;
+import gravityMan.entities.abstractEntities.AbstractFreeMoveEntity;
+import gravityMan.entities.hitboxes.RectHitbox;
 import gravityMan.util.Vector2d;
 import static org.lwjgl.opengl.GL11.*;
 

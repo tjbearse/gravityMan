@@ -1,5 +1,6 @@
 package gravityMan.entities;
 
+import gravityMan.entities.abstractEntities.AbstractFreeMoveEntity;
 import gravityMan.util.Vector2d;
 import static org.lwjgl.opengl.GL11.*;
 

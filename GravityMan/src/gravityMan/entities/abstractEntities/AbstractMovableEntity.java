@@ -1,4 +1,4 @@
-package gravityMan.entities;
+package gravityMan.entities.abstractEntities;
 
 import gravityMan.util.Vector2d;
 

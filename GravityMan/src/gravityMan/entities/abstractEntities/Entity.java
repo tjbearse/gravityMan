@@ -1,4 +1,4 @@
-package gravityMan.entities;
+package gravityMan.entities.abstractEntities;
 
 
 public interface Entity {

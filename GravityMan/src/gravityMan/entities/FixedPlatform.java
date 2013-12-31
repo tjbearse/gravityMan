@@ -1,8 +1,8 @@
-package gravityMan.abstractEntities.entities;
+package gravityMan.entities;
 
 import static org.lwjgl.opengl.GL11.*;
-import gravityMan.abstractEntities.hitboxes.RectHitbox;
-import gravityMan.entities.AbstractFixedMoveEntity;
+import gravityMan.entities.abstractEntities.AbstractFixedMoveEntity;
+import gravityMan.entities.hitboxes.RectHitbox;
 
 public class FixedPlatform extends AbstractFixedMoveEntity {
 	private double width, height;

@@ -1,6 +1,6 @@
-package gravityMan.abstractEntities.hitboxes;
+package gravityMan.entities.hitboxes;
 
-import gravityMan.abstractEntities.hitboxes.SAT.Range;
+import gravityMan.entities.hitboxes.SAT.Range;
 import gravityMan.util.Matrix;
 import gravityMan.util.Vector2d;
 

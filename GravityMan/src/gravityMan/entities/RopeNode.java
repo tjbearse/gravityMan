@@ -1,8 +1,8 @@
 package gravityMan.entities;
 
 import static org.lwjgl.opengl.GL11.*;
-import gravityMan.abstractEntities.hitboxes.RectHitbox;
-import gravityMan.util.RungeKutta;
+import gravityMan.entities.abstractEntities.AbstractFreeMoveEntity;
+import gravityMan.entities.hitboxes.RectHitbox;
 import gravityMan.util.Vector2d;
 
 //TODO move to rope package
