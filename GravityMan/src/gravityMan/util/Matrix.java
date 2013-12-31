@@ -19,6 +19,7 @@ public class Matrix {
 		this.d = downRight;
 	}
 
+	// TODO use return new matrix style scaler only?
 	public void matrixScaler(double factor) {
 		a *= factor;
 		b *= factor;
@@ -31,48 +32,55 @@ public class Matrix {
 	}
 
 	public Vector2d multiply(Vector2d vec) {
-		double e = a * vec.getX() + c * vec.getY(); //top 
-		double f = b * vec.getX() + d * vec.getY(); //bottom
+		double e = a * vec.getX() + c * vec.getY(); // top
+		double f = b * vec.getX() + d * vec.getY(); // bottom
 		return new Vector2d(e, f);
 
 	}
 
 	public Matrix multiply(Matrix other) {
-		double i = a * other.a + c * other.b; //upperLeft
-		double j = b * other.a + d * other.b; //lowerLeft
-		double k = a * other.c + c * other.d; //upperRight
-		double l = b * other.c + d * other.d; //lowerRight
+		double i = a * other.a + c * other.b; // upperLeft
+		double j = b * other.a + d * other.b; // lowerLeft
+		double k = a * other.c + c * other.d; // upperRight
+		double l = b * other.c + d * other.d; // lowerRight
 		return new Matrix(i, j, k, l);
 	}
-	
-	public static Matrix rotationMatrix(double theta){
-		double m = Math.cos(theta); //upperLeft
-		double n = Math.sin(theta); //lowerLeft
-		double o = -Math.sin(theta); //upperRight
-		double p = Math.cos(theta); //lowerRight
+
+	public static Matrix rotationMatrix(double theta) {
+		double m = Math.cos(theta); // upperLeft
+		double n = Math.sin(theta); // lowerLeft
+		double o = -Math.sin(theta); // upperRight
+		double p = Math.cos(theta); // lowerRight
 		return new Matrix(m, n, o, p);
 	}
-	
-	public static Matrix projectionMatrix(Vector2d v){
-		double q = (1/(v.getMag()* v.getMag())) * (v.getX() * v.getX()); //upperLeft
-		double r = (1/(v.getMag()* v.getMag())) * (v.getX() * v.getY()); //lowerLeft
-		double s = (1/(v.getMag()* v.getMag())) * (v.getX() * v.getY());  //upperRight
-		double t = (1/(v.getMag()* v.getMag())) * (v.getY() * v.getY()); //lowerRight
+
+	public static Matrix projectionMatrix(Vector2d v) {
+		double q = (1 / (v.getMag() * v.getMag())) * (v.getX() * v.getX()); // upperLeft
+		double r = (1 / (v.getMag() * v.getMag())) * (v.getX() * v.getY()); // lowerLeft
+		double s = (1 / (v.getMag() * v.getMag())) * (v.getX() * v.getY()); // upperRight
+		double t = (1 / (v.getMag() * v.getMag())) * (v.getY() * v.getY()); // lowerRight
 		return new Matrix(q, r, s, t);
 	}
-	
-	public static Matrix inversionMatrix(Matrix m){
-		//TODO throw an exception
-		if (1/((m.a * m.d) - (m.c * m.b)) == 0){
-			return null;
-		}
-		else{
-			double u = (1/((m.a * m.d) - (m.c * m.b))) * m.d;  //upperLeft
-			double v = (1/((m.a * m.d) - (m.c * m.b))) * -m.b; //lowerLeft
-			double w = (1/((m.a * m.d) - (m.c * m.b))) * -m.c; //upperRight
-			double x = (1/((m.a * m.d) - (m.c * m.b))) * m.a; //lowerRight
+
+	public boolean invertable() {
+		return (1 / ((this.a * this.d) - (this.c * this.b)) != 0);
+	}
+
+	public static Matrix inversionMatrix(Matrix m)
+			throws NonInvertibleMatrixException {
+		if (!m.invertable()) {
+			throw new NonInvertibleMatrixException();
+		} else {
+			double u = (1 / ((m.a * m.d) - (m.c * m.b))) * m.d; // upperLeft
+			double v = (1 / ((m.a * m.d) - (m.c * m.b))) * -m.b; // lowerLeft
+			double w = (1 / ((m.a * m.d) - (m.c * m.b))) * -m.c; // upperRight
+			double x = (1 / ((m.a * m.d) - (m.c * m.b))) * m.a; // lowerRight
 			return new Matrix(u, v, w, x);
-			
+
 		}
+	}
+
+	public static class NonInvertibleMatrixException extends Exception {
+
 	}
 }
