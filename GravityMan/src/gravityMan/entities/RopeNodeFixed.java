@@ -6,7 +6,6 @@ import static org.lwjgl.opengl.GL11.glEnd;
 import static org.lwjgl.opengl.GL11.glVertex2d;
 import gravityMan.entities.abstractEntities.AbstractFixedMoveEntity;
 import gravityMan.entities.hitboxes.RectHitbox;
-import gravityMan.util.Vector2d;
 
 //TODO migrate to ropes package
 public class RopeNodeFixed extends AbstractFixedMoveEntity {

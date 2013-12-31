@@ -3,7 +3,6 @@ package gravityMan.entities;
 import static org.lwjgl.opengl.GL11.*;
 import gravityMan.entities.abstractEntities.AbstractFreeMoveEntity;
 import gravityMan.entities.hitboxes.RectHitbox;
-import gravityMan.util.Vector2d;
 
 public class RectEntity extends AbstractFreeMoveEntity {
 	private double width, height;

@@ -8,9 +8,7 @@ import gravityMan.entities.FixedPlatform;
 import gravityMan.entities.Rope;
 import gravityMan.entities.RectEntity;
 import gravityMan.entities.TestObject;
-import gravityMan.entities.abstractEntities.AbstractEntity;
 import gravityMan.entities.abstractEntities.AbstractMovableEntity;
-import gravityMan.entities.abstractEntities.Entity;
 import gravityMan.util.Vector2d;
 
 import org.lwjgl.*;
