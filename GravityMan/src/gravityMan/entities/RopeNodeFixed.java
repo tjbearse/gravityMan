@@ -9,10 +9,10 @@ import gravityMan.util.Vector2d;
 
 //TODO migrate to ropes package
 public class RopeNodeFixed extends AbstractFixedMoveEntity {
-
+	private double width = 8, height = 8;
 	public RopeNodeFixed(double x, double y) {
-		super(x, y, 8, 8);
-		hitbox = new SimpleRectHitbox(x, y, 8, 8);
+		super(x, y);
+		hitbox = new SimpleRectHitbox(x, y, width, height);
 	}
 
 	@Override

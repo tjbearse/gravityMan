@@ -12,8 +12,8 @@ public abstract class AbstractMovableEntity extends AbstractEntity implements
 	public abstract void applyForce(Vector2d force);
 	public abstract void applyForce(Vector2d force, Vector2d disp);
 
-	public AbstractMovableEntity(double x, double y, double width, double height) {
-		super(x, y, width, height);
+	public AbstractMovableEntity(double x, double y) {
+		super(x, y);
 		vel = new Vector2d(0, 0);
 		angVel = 0;
 	}

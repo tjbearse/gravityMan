@@ -6,15 +6,15 @@ public abstract class AbstractFreeMoveEntity extends AbstractMovableEntity {
 	protected double mass;
 	protected Vector2d force;
 	protected Vector2d momentum;
-	
+
 	protected double torque;
 	protected double inertia;
 	protected double angMomentum;
 
-	public AbstractFreeMoveEntity(double x, double y, double width,
-			double height, double mass, double inertia) {
-		super(x, y, width, height);
-		
+	public AbstractFreeMoveEntity(double x, double y, double mass,
+			double inertia) {
+		super(x, y);
+
 		this.mass = mass;
 		this.inertia = inertia;
 		angMomentum = 0;
@@ -30,16 +30,16 @@ public abstract class AbstractFreeMoveEntity extends AbstractMovableEntity {
 	public void applyForce(Vector2d force) {
 		this.force.add(force);
 	}
-	
-	public void applyForce(Vector2d force, Vector2d displacement){
+
+	public void applyForce(Vector2d force, Vector2d displacement) {
 		this.force.add(force);
 		torque += force.cross(displacement);
 	}
 
-	public double getMass(){
+	public double getMass() {
 		return mass;
 	}
-	
+
 	@Override
 	public void update(int delta) {
 		// TODO: change to improved Euler or RK4?
@@ -51,7 +51,7 @@ public abstract class AbstractFreeMoveEntity extends AbstractMovableEntity {
 		angMomentum += torque * delta;
 		torque = 0;
 		angVel = angMomentum / inertia;
-		
+
 		super.update(delta);
 	}
 

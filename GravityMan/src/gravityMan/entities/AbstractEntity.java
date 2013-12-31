@@ -6,14 +6,12 @@ import gravityMan.util.Vector2d;
 import static org.lwjgl.opengl.GL11.*;
 
 public abstract class AbstractEntity implements Entity {
-	protected double width, height, theta;
+	protected double theta;
 	protected Vector2d pos;
 	public Hitbox hitbox;
 
-	public AbstractEntity(double x, double y, double width, double height) {
+	public AbstractEntity(double x, double y) {
 		pos = new Vector2d(x, y);
-		this.width = width;
-		this.height = height;
 		theta = 0;
 	}
 
@@ -57,16 +55,6 @@ public abstract class AbstractEntity implements Entity {
 	}
 
 	@Override
-	public void setWidth(double width) {
-		this.width = width;
-	}
-
-	@Override
-	public void setHeight(double height) {
-		this.height = height;
-	}
-
-	@Override
 	public double getX() {
 		return pos.getX();
 	}
@@ -78,16 +66,6 @@ public abstract class AbstractEntity implements Entity {
 
 	public Vector2d getLocation() {
 		return new Vector2d(pos);
-	}
-
-	@Override
-	public double getHeight() {
-		return height;
-	}
-
-	@Override
-	public double getWidth() {
-		return width;
 	}
 
 	public void setTheta(double theta) {
