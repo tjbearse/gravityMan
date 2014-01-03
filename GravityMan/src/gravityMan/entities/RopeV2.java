@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import gravityMan.entities.abstractEntities.AbstractMovableEntity;
 import gravityMan.entities.connectors.AbstractConnector;
 import gravityMan.entities.connectors.SpringConnector;
+import gravityMan.entities.connectors.TensionConnector;
 import gravityMan.util.Vector2d;
 import static org.lwjgl.opengl.GL11.*;
 
@@ -20,8 +21,8 @@ public class RopeV2 {
 	 */
 
 	// Spring Constants
-	protected double equilLen = 3;
-	protected double interConst = 0, interConnect = 7;
+	protected double equilLen = 2;
+	protected double interConst = 0, interConnect = 8;
 	protected double springConst = .03;
 
 	// Node attributes
@@ -74,17 +75,34 @@ public class RopeV2 {
 	protected void connect() {
 		// destroy connections
 		
-		for (int j = 0; j < interConnect; j++) {
+
+		for (int j = 0; j < interConnect; j+=2) {
 			connectors.add(new SpringConnector(a, dispA, nodes[j],
 					new Vector2d(0, 0), springConst, equilLen
 							* (j + 1 + (j * interConst))));
+
 			for (int i = j + 1; i < nodes.length; i++) {
 				connectors.add(new SpringConnector(nodes[i - 1 - j], nodes[i],
 						springConst, equilLen * (j + 1 + (j * interConst))));
 			}
+
 			connectors.add(new SpringConnector(nodes[nodes.length - 1 - j],
 					new Vector2d(0, 0), b, dispB, springConst, equilLen
 							* (j + 1 + (j * interConst))));
+		}
+		for (int j = 1; j < interConnect; j+=2) {
+			connectors.add(new TensionConnector(a, dispA, nodes[j],
+					new Vector2d(0, 0), springConst, equilLen
+					* (j + 1 + (j * interConst))));
+			
+			for (int i = j + 1; i < nodes.length; i++) {
+				connectors.add(new TensionConnector(nodes[i - 1 - j], nodes[i],
+						springConst, equilLen * (j + 1 + (j * interConst))));
+			}
+			
+			connectors.add(new TensionConnector(nodes[nodes.length - 1 - j],
+					new Vector2d(0, 0), b, dispB, springConst, equilLen
+					* (j + 1 + (j * interConst))));
 		}
 	}
 

@@ -39,12 +39,11 @@ public class SpringConnector extends AbstractConnector {
 
 		a.applyForce(force.scaleCpy(-1), locA.subCpy(a.getLocation()));
 		b.applyForce(force, locB.subCpy(b.getLocation()));
-
 	}
 
 	public void draw() {
 		glBegin(GL_LINES);
-		glColor3d(0, .7, .3);
+		glColor3d(0, 1, 1);
 		glVertex2d(locA.getX(), locA.getY());
 		glVertex2d(locB.getX(), locB.getY());
 		glEnd();
