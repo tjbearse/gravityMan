@@ -29,37 +29,18 @@ public class Vector2d {
 	public Vector2d scale(double factor) {
 		double theta = getAngleRad();
 		double mag = getMag();
-		x = Math.cos(theta) * mag * factor;
-		y = Math.sin(theta) * mag * factor;
-		return this;
-	}
-
-	public Vector2d scaleCpy(double factor) {
-		Vector2d vec = new Vector2d(this);
-		vec.scale(factor);
-		return vec;
+		double x = Math.cos(theta) * mag * factor;
+		double y = Math.sin(theta) * mag * factor;
+		return new Vector2d(x,y);
 	}
 
 	public Vector2d add(Vector2d v) {
-		x += v.x;
-		y += v.y;
-		return this;
+		return new Vector2d(x + v.x, y + v.y);
 	}
 
 	public Vector2d sub(Vector2d v) {
-		x -= v.x;
-		y -= v.y;
-		return this;
-	}
+		return new Vector2d(x - v.x, y - v.y);
 
-	public Vector2d addCpy(Vector2d v) {
-		Vector2d vec = new Vector2d(this);
-		return vec.add(v);
-	}
-
-	public Vector2d subCpy(Vector2d v) {
-		Vector2d vec = new Vector2d(this);
-		return vec.sub(v);
 	}
 
 	public void setAngleRad(double theta) {

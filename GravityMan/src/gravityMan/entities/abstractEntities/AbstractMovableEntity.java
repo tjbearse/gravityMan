@@ -20,7 +20,7 @@ public abstract class AbstractMovableEntity extends AbstractEntity implements
 	public void update(int delta) {
 		// TODO change to RK4 or improved Euler
 		// Linear
-		pos.add(vel.scaleCpy(delta));
+		pos = pos.add(vel.scale(delta));
 		hitbox.setLocation(pos);
 		// Rotational
 		theta += angVel;
@@ -78,7 +78,7 @@ public abstract class AbstractMovableEntity extends AbstractEntity implements
 
 	@Override
 	public void scaleVel(double factor) {
-		vel.scale(factor);
+		vel = vel.scale(factor);
 
 	}
 

@@ -103,7 +103,7 @@ public class Rope {
 		// rotation
 		anchorBLoc.setAngleRad(anchorBLoc.getAngleRad() + anchorB.getTheta());
 		// position
-		anchorBLoc.add(anchorB.getLocation());
+		anchorBLoc = anchorBLoc.add(anchorB.getLocation());
 	}
 
 	private void updateAnchorA() {
@@ -113,7 +113,7 @@ public class Rope {
 		// rotation
 		anchorALoc.setAngleRad(anchorALoc.getAngleRad() + anchorA.getTheta());
 		// position
-		anchorALoc.add(anchorA.getLocation());
+		anchorALoc = anchorALoc.add(anchorA.getLocation());
 	}
 
 	private void TensionForces() {
@@ -124,39 +124,39 @@ public class Rope {
 
 		for (int j = 1; j <= 5; j++) {
 			for (int i = 0; i < j && i < nodes.length; i++) {
-				dist = anchorALoc.subCpy(nodes[i].getLocation());
+				dist = anchorALoc.sub(nodes[i].getLocation());
 				if (dist.getMag() > equilLen * (i + 1)) {
-					x = dist.scaleCpy(equilLen * (i + 1) / dist.getMag());
-					force = dist.subCpy(x).scaleCpy(springConst);
+					x = dist.scale(equilLen * (i + 1) / dist.getMag());
+					force = dist.sub(x).scale(springConst);
 
 					nodes[i].applyForce(force.scale(j - i));
 
-					Vector2d disp = anchorALoc.subCpy(anchorA.getLocation());
+					Vector2d disp = anchorALoc.sub(anchorA.getLocation());
 					anchorA.applyForce(force.scale(-1), disp);
 				}
 			}
 
 			for (int i = j; i < nodes.length; i++) {
 				dist = nodes[i - j].getLocation()
-						.subCpy(nodes[i].getLocation());
+						.sub(nodes[i].getLocation());
 				if (dist.getMag() > equilLen * j) {
-					x = dist.scaleCpy(equilLen * j / dist.getMag());
-					force = dist.subCpy(x).scale(springConst);
+					x = dist.scale(equilLen * j / dist.getMag());
+					force = dist.sub(x).scale(springConst);
 
 					nodes[i].applyForce(force);
-					nodes[i - j].applyForce(force.scaleCpy(-1));
+					nodes[i - j].applyForce(force.scale(-1));
 				}
 			}
 			for (int i = 0; i < j && nodes.length - i > 0; i++) {
-				dist = anchorBLoc.subCpy(nodes[nodes.length - i - 1]
+				dist = anchorBLoc.sub(nodes[nodes.length - i - 1]
 						.getLocation());
 				if (dist.getMag() > equilLen * (i + 1)) {
-					x = dist.scaleCpy(equilLen * (i + 1) / dist.getMag());
-					force = dist.subCpy(x).scaleCpy(springConst);
+					x = dist.scale(equilLen * (i + 1) / dist.getMag());
+					force = dist.sub(x).scale(springConst);
 
 					nodes[nodes.length - i - 1].applyForce(force.scale(j - i));
 
-					Vector2d disp = anchorBLoc.subCpy(anchorB.getLocation());
+					Vector2d disp = anchorBLoc.sub(anchorB.getLocation());
 					anchorB.applyForce(force.scale(-1), disp);
 				}
 			}

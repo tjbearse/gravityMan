@@ -24,15 +24,15 @@ public abstract class AbstractFreeMoveEntity extends AbstractMovableEntity {
 	}
 
 	public void clearForce() {
-		force.scale(0);
+		force = force.scale(0);
 	}
 
 	public void applyForce(Vector2d force) {
-		this.force.add(force);
+		this.force = this.force.add(force);
 	}
 
 	public void applyForce(Vector2d force, Vector2d displacement) {
-		this.force.add(force);
+		this.force = this.force.add(force);
 		torque += force.cross(displacement);
 	}
 
@@ -44,9 +44,9 @@ public abstract class AbstractFreeMoveEntity extends AbstractMovableEntity {
 	public void update(int delta) {
 		// TODO: change to improved Euler or RK4?
 		// linear
-		momentum.add(force.scaleCpy(delta));
+		momentum = momentum.add(force.scale(delta));
 		force.zero();
-		vel = momentum.scaleCpy(1 / mass);
+		vel = momentum.scale(1 / mass);
 		// angular
 		angMomentum += torque * delta;
 		torque = 0;

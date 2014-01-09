@@ -30,28 +30,28 @@ public class RectHitbox extends Hitbox {
 		
 		// top left
 		Vector2d vec = rot.multiply(new Vector2d(-width / 2, height / 2));
-		vec.add(pos);
+		vec = vec.add(pos);
 		vec = proj.multiply(vec);
 		int sign = vec.getAngleRad() > Math.PI ? 1 : -1;
 		Range r = new Range(vec.getMag() * sign, vec.getMag() * sign);
 
 		// top right
 		vec = rot.multiply(new Vector2d(width / 2, height / 2));
-		vec.add(pos);
+		vec = vec.add(pos);
 		vec = proj.multiply(vec);
 		sign = vec.getAngleRad() > Math.PI ? 1 : -1;
 		r.add(vec.getMag() * sign);
 
 		// bottom right
 		vec = rot.multiply(new Vector2d(width / 2, -height / 2));
-		vec.add(pos);
+		vec = vec.add(pos);
 		vec = proj.multiply(vec);
 		sign = vec.getAngleRad() > Math.PI ? 1 : -1;
 		r.add(vec.getMag() * sign);
 
 		// bottom left
 		vec = rot.multiply(new Vector2d(-width / 2, -height / 2));
-		vec.add(pos);
+		vec = vec.add(pos);
 		vec = proj.multiply(vec);
 		sign = vec.getAngleRad() > Math.PI ? 1 : -1;
 		r.add(vec.getMag() * sign);

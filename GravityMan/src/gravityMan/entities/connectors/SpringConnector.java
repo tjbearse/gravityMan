@@ -28,17 +28,17 @@ public class SpringConnector extends AbstractConnector {
 		updateA();
 		updateB();
 		
-		Vector2d dist = locA.subCpy(locB);
+		Vector2d dist = locA.sub(locB);
 		Vector2d x;
 		if (dist.getMag() > minDist) {
-			x = dist.scaleCpy(equilLen / dist.getMag());
+			x = dist.scale(equilLen / dist.getMag());
 		} else {
-			x = dist.scaleCpy(equilLen / minDist);
+			x = dist.scale(equilLen / minDist);
 		}
-		Vector2d force = dist.subCpy(x).scaleCpy(springConstant);
+		Vector2d force = dist.sub(x).scale(springConstant);
 
-		a.applyForce(force.scaleCpy(-1), locA.subCpy(a.getLocation()));
-		b.applyForce(force, locB.subCpy(b.getLocation()));
+		a.applyForce(force.scale(-1), locA.sub(a.getLocation()));
+		b.applyForce(force, locB.sub(b.getLocation()));
 	}
 
 	public void draw() {

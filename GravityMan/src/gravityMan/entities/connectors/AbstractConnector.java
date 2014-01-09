@@ -48,7 +48,7 @@ public abstract class AbstractConnector {
 		// rotation
 		locA.setAngleRad(locA.getAngleRad() + a.getTheta());
 		// position
-		locA.add(a.getLocation());
+		locA = locA.add(a.getLocation());
 	}
 	
 	protected void updateB() {
@@ -58,7 +58,7 @@ public abstract class AbstractConnector {
 		// rotation
 		locB.setAngleRad(locB.getAngleRad() + b.getTheta());
 		// position
-		locB.add(b.getLocation());
+		locB = locB.add(b.getLocation());
 	}
 
 	public abstract void apply();
